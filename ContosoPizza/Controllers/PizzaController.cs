@@ -35,7 +35,7 @@ namespace ContosoPizza.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update([FromRoute] int id, Pizza pizza){
+        public IActionResult Update( int id, Pizza pizza){
             if(id !=pizza.Id){
                 return BadRequest();
             }
