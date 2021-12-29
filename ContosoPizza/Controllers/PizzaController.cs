@@ -15,13 +15,15 @@ namespace ContosoPizza.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Pizza>>> GetAll() => await PizzaService.GetAll();
+        public async  Task<ActionResult<List<Pizza>>> GetAll() => await PizzaService.GetAll();
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Pizza>> Get(int id){
+        public async Task<ActionResult<Pizza>> Get(int id)
+        {
             var pizza = await PizzaService.Get(id);
 
-            if (pizza == null){
+            if (pizza == null)
+            {
                 return NotFound();
             }
 
@@ -29,27 +31,32 @@ namespace ContosoPizza.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Pizza pizza){
+        public async Task<IActionResult> Create(Pizza pizza)
+        {
             await PizzaService.Add(pizza);
-            return CreatedAtAction(nameof(Create), new { id = pizza.Id}, pizza);
+            return CreatedAtAction(nameof(Create), new { id = pizza.Id }, pizza);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update( int id, Pizza pizza){
-            
-            if (! await PizzaService.Update(id, pizza)){
-                return BadRequest();
+        public async Task<IActionResult> Update(int id, Pizza pizza)
+        {
+
+            if (!await PizzaService.Update(id, pizza))
+            {
+                return NotFound();
             }
 
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id){
+        public async Task<IActionResult> Delete(int id)
+        {
 
             var pizza = await PizzaService.Get(id);
 
-            if (pizza is null){
+            if (pizza is null)
+            {
                 return NotFound();
             }
 

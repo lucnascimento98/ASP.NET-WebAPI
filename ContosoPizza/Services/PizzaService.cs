@@ -7,19 +7,11 @@ namespace ContosoPizza.Services
 {
     public static class PizzaService
     {
-        static List<Pizza> Pizzas { get; }
 
         private static ContosoPizzaContext db { get; }
-        static int nextId = 3;
         static PizzaService()
         {
-            db = new  ContosoPizzaContext();
-
-            Pizzas = new List<Pizza>
-            {
-                new Pizza { Id = 1, Name = "Classic Italian", IsGlutenFree = false },
-                new Pizza { Id = 2, Name = "Veggie", IsGlutenFree = true }
-            };
+            db = new ContosoPizzaContext(new DbContextOptionsBuilder().UseInMemoryDatabase("Contoso").Options);
         }
 
         public static async Task<List<Pizza>> GetAll() => await db.Pizzas.ToListAsync();
