@@ -14,7 +14,28 @@ namespace ContosoPizza.Services
             db = new ContosoPizzaContext(new DbContextOptionsBuilder().UseInMemoryDatabase("Contoso").Options);
         }
 
-        public static async Task<List<Pizza>> GetAll() => await db.Pizzas.ToListAsync();
+        public static List<Pizza> GetAll(string search, int page, int quantity, bool? glutenFree)
+        {
+            //var Pizzas = from pizza in db.Pizzas select pizza;
+
+            var pizzas = db.Pizzas.Select(pizza => pizza);
+
+            if(!String.IsNullOrWhiteSpace(search))
+            {
+                pizzas = pizzas.Where(pizza => pizza.Name.Contains(search));
+            }
+
+            if (glutenFree.HasValue)
+            {
+                pizzas = pizzas.Where(pizzas => pizzas.IsGlutenFree == glutenFree.Value);
+            }
+
+            int skipedElements = (page - 1) * quantity;
+
+            pizzas = pizzas.OrderBy(p => p.Name).Skip(skipedElements).Take(quantity);
+
+            return pizzas.ToList(); 
+        }
 
         public static async Task<Pizza> Get(int id) => await db.Pizzas.FirstOrDefaultAsync(p => p.Id == id);
 
@@ -27,7 +48,7 @@ namespace ContosoPizza.Services
         public static async Task Delete(int id)
         {
             var pizza = await Get(id);
-            if(pizza is null)
+            if (pizza is null)
                 return;
 
             db.Pizzas.Remove(pizza);
@@ -38,12 +59,12 @@ namespace ContosoPizza.Services
         public static async Task<bool> Update(int id, Pizza requestPizza)
         {
             var pizza = await Get(id);
-            if(pizza is null)
+            if (pizza is null)
                 return false;
-            
+
             pizza.Name = requestPizza.Name;
             pizza.IsGlutenFree = requestPizza.IsGlutenFree;
-            
+
             await db.SaveChangesAsync();
 
             return true;

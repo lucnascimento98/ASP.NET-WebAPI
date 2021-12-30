@@ -15,7 +15,17 @@ namespace ContosoPizza.Controllers
         }
 
         [HttpGet]
-        public async  Task<ActionResult<List<Pizza>>> GetAll() => await PizzaService.GetAll();
+        public ActionResult<List<Pizza>> GetAll([FromQuery]string search, [FromQuery] bool? glutenFree, [FromQuery] int page = 1, [FromQuery] int quantity = 10 )
+        {
+            var Pizzas = PizzaService.GetAll(search, page, quantity, glutenFree);
+
+            if (Pizzas.Count() == 0)
+            {
+                return NoContent();
+            }
+            return Pizzas;
+        }
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Pizza>> Get(int id)
