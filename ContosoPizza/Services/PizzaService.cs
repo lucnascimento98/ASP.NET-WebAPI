@@ -11,7 +11,7 @@ namespace ContosoPizza.Services
         private static ContosoPizzaContext db { get; }
         static PizzaService()
         {
-            db = new ContosoPizzaContext(new DbContextOptionsBuilder().UseInMemoryDatabase("Contoso").Options);
+            db = new ContosoPizzaContext(new DbContextOptionsBuilder().UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=Test").Options);
         }
 
         public static List<Pizza> GetAll(string search, int page, int quantity, bool? glutenFree)
@@ -20,7 +20,7 @@ namespace ContosoPizza.Services
 
             var pizzas = db.Pizzas.Select(pizza => pizza);
 
-            if(!String.IsNullOrWhiteSpace(search))
+            if (!String.IsNullOrWhiteSpace(search))
             {
                 pizzas = pizzas.Where(pizza => pizza.Name.Contains(search));
             }
@@ -34,7 +34,7 @@ namespace ContosoPizza.Services
 
             pizzas = pizzas.OrderBy(p => p.Name).Skip(skipedElements).Take(quantity);
 
-            return pizzas.ToList(); 
+            return pizzas.ToList();
         }
 
         public static async Task<Pizza> Get(int id) => await db.Pizzas.FirstOrDefaultAsync(p => p.Id == id);

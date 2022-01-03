@@ -41,7 +41,7 @@ namespace ContosoPizza.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Pizza pizza)
+        public async Task<IActionResult> Create([FromBody]Pizza pizza)
         {
             await PizzaService.Add(pizza);
             return CreatedAtAction(nameof(Create), new { id = pizza.Id }, pizza);
