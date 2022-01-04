@@ -7,6 +7,16 @@ namespace ContosoPizza.Models
     {
         public DbSet<Pizza> Pizzas { get; set; }
 
+        public ContosoPizzaContext()
+        {
+
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=ContosoPizza;");
+            base.OnConfiguring(optionsBuilder);
+        }
         public ContosoPizzaContext(DbContextOptions options): base(options)
         {
             
@@ -19,6 +29,6 @@ namespace ContosoPizza.Models
     {
         public int Id { get; set; }
         public string Name { get; set; } 
-        public bool IsGlutenFree { get; set; }
+        public bool? IsGlutenFree { get; set; }
     }
 }

@@ -1,4 +1,11 @@
+using ContosoPizza.Models;
+using ContosoPizza.Services;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+
+//builder.Services.AddDbContext<ContosoPizzaContext>(d => d.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=ContosoPizza;"));
 
 // Add services to the container.
 

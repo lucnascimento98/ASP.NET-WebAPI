@@ -11,7 +11,7 @@ namespace ContosoPizza.Services
         private static ContosoPizzaContext db { get; }
         static PizzaService()
         {
-            db = new ContosoPizzaContext(new DbContextOptionsBuilder().UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=Test").Options);
+            db = new ContosoPizzaContext();
         }
 
         public static List<Pizza> GetAll(string search, int page, int quantity, bool? glutenFree)
