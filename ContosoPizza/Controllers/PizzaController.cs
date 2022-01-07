@@ -19,7 +19,7 @@ namespace ContosoPizza.Controllers
         {
             var Pizzas = PizzaService.GetAll(search, page, quantity, glutenFree);
 
-            if (Pizzas.Count() == 0)
+            if (Pizzas.Count == 0)
             {
                 return NoContent();
             }
@@ -40,12 +40,30 @@ namespace ContosoPizza.Controllers
             return pizza;
         }
 
+
+
+
+
+
+
+
         [HttpPost]
         public async Task<IActionResult> Create([FromBody]Pizza pizza)
         {
             await PizzaService.Add(pizza);
-            return CreatedAtAction(nameof(Create), new { id = pizza.Id }, pizza);
+            return CreatedAtAction(nameof(Get), new { id = pizza.Id }, pizza);
         }
+
+        
+
+
+
+
+
+
+
+
+
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, Pizza pizza)
@@ -58,6 +76,20 @@ namespace ContosoPizza.Controllers
 
             return NoContent();
         }
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
@@ -74,5 +106,7 @@ namespace ContosoPizza.Controllers
 
             return NoContent();
         }
+
+        
     }
 }

@@ -8,17 +8,17 @@ namespace ContosoPizza.Services
     public static class PizzaService
     {
 
-        private static ContosoPizzaContext db { get; }
+        private static ContosoPizzaContext Db { get; }
         static PizzaService()
         {
-            db = new ContosoPizzaContext();
+            Db = new ContosoPizzaContext();
         }
 
         public static List<Pizza> GetAll(string search, int page, int quantity, bool? glutenFree)
         {
             //var Pizzas = from pizza in db.Pizzas select pizza;
 
-            var pizzas = db.Pizzas.Select(pizza => pizza);
+            var pizzas = Db.Pizzas.Select(pizza => pizza);
 
             if (!String.IsNullOrWhiteSpace(search))
             {
@@ -37,13 +37,27 @@ namespace ContosoPizza.Services
             return pizzas.ToList();
         }
 
-        public static async Task<Pizza> Get(int id) => await db.Pizzas.FirstOrDefaultAsync(p => p.Id == id);
+        public static async Task<Pizza> Get(int id) => await Db.Pizzas.FirstOrDefaultAsync(p => p.Id == id);
+
+
+
+
+
+
 
         public static async Task Add(Pizza pizza)
         {
-            db.Pizzas.Add(pizza);
-            await db.SaveChangesAsync();
+            Db.Pizzas.Add(pizza);
+            await Db.SaveChangesAsync();
         }
+
+
+
+
+
+
+
+
 
         public static async Task Delete(int id)
         {
@@ -51,10 +65,24 @@ namespace ContosoPizza.Services
             if (pizza is null)
                 return;
 
-            db.Pizzas.Remove(pizza);
-            await db.SaveChangesAsync();
+            Db.Pizzas.Remove(pizza);
+            await Db.SaveChangesAsync();
 
         }
+
+       
+
+
+
+
+
+
+
+
+
+
+
+
 
         public static async Task<bool> Update(int id, Pizza requestPizza)
         {
@@ -64,10 +92,13 @@ namespace ContosoPizza.Services
 
             pizza.Name = requestPizza.Name;
             pizza.IsGlutenFree = requestPizza.IsGlutenFree;
+            pizza.Value = requestPizza.Value;
 
-            await db.SaveChangesAsync();
+            await Db.SaveChangesAsync();
 
             return true;
         }
+
+       
     }
 }
