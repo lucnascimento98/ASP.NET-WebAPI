@@ -5,16 +5,16 @@ using System.Linq;
 
 namespace ContosoPizza.Services
 {
-    public static class PizzaService
+    public class PizzaService : IPizzaService
     {
 
-        private static ContosoPizzaContext Db { get; }
-        static PizzaService()
+        private ContosoPizzaContext Db { get; }
+        public PizzaService(ContosoPizzaContext ctx)
         {
-            Db = new ContosoPizzaContext();
+            Db = ctx;
         }
 
-        public static List<Pizza> GetAll(string search, int page, int quantity, bool? glutenFree)
+        public Task<List<Pizza>> GetAll(string search, int page, int quantity, bool? glutenFree)
         {
             //var Pizzas = from pizza in db.Pizzas select pizza;
 
@@ -34,32 +34,18 @@ namespace ContosoPizza.Services
 
             pizzas = pizzas.OrderBy(p => p.Name).Skip(skipedElements).Take(quantity);
 
-            return pizzas.ToList();
+            return pizzas.ToListAsync();
         }
 
-        public static async Task<Pizza> Get(int id) => await Db.Pizzas.FirstOrDefaultAsync(p => p.Id == id);
+        public async Task<Pizza> Get(int id) => await Db.Pizzas.FirstOrDefaultAsync(p => p.Id == id);
 
-
-
-
-
-
-
-        public static async Task Add(Pizza pizza)
+        public async Task Add(Pizza pizza)
         {
             Db.Pizzas.Add(pizza);
             await Db.SaveChangesAsync();
         }
 
-
-
-
-
-
-
-
-
-        public static async Task Delete(int id)
+        public async Task Delete(int id)
         {
             var pizza = await Get(id);
             if (pizza is null)
@@ -70,21 +56,7 @@ namespace ContosoPizza.Services
 
         }
 
-       
-
-
-
-
-
-
-
-
-
-
-
-
-
-        public static async Task<bool> Update(int id, Pizza requestPizza)
+        public async Task<bool> Update(int id, Pizza requestPizza)
         {
             var pizza = await Get(id);
             if (pizza is null)
@@ -98,7 +70,6 @@ namespace ContosoPizza.Services
 
             return true;
         }
-
        
     }
 }

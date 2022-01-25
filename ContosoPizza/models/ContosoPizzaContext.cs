@@ -19,11 +19,6 @@ namespace ContosoPizza.Models
 
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=ContosoPizza;");
-            base.OnConfiguring(optionsBuilder);
-        }
         public ContosoPizzaContext(DbContextOptions options): base(options)
         {
             

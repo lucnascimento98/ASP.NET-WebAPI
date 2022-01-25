@@ -1,3 +1,4 @@
+using ContosoPizza;
 using ContosoPizza.Models;
 using ContosoPizza.Services;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddScoped<IPizzaService, PizzaService>();
+builder.Services.AddDbContext<ContosoPizzaContext>((sp, options) => options.UseSqlServer(sp.GetRequiredService<IConfiguration>().GetConnectionString("Default")));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

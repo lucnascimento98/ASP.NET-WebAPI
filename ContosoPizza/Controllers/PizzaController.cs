@@ -10,14 +10,17 @@ namespace ContosoPizza.Controllers
     [Route("[controller]")]
     public class PizzaController : ControllerBase
     {
-        public PizzaController()
+        private readonly IPizzaService _pizzaService;
+
+        public PizzaController(IPizzaService pizzaService)
         {
+            _pizzaService = pizzaService;
         }
 
         [HttpGet]
-        public ActionResult<List<Pizza>> GetAll([FromQuery]string search, [FromQuery] bool? glutenFree, [FromQuery] int page = 1, [FromQuery] int quantity = 10 )
+        public async Task<ActionResult<List<Pizza>>> GetAll([FromQuery]string search, [FromQuery] bool? glutenFree, [FromQuery] int page = 1, [FromQuery] int quantity = 10 )
         {
-            var Pizzas = PizzaService.GetAll(search, page, quantity, glutenFree);
+            var Pizzas = await _pizzaService.GetAll(search, page, quantity, glutenFree);
 
             if (Pizzas.Count == 0)
             {
@@ -30,7 +33,7 @@ namespace ContosoPizza.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Pizza>> Get(int id)
         {
-            var pizza = await PizzaService.Get(id);
+            var pizza = await _pizzaService.Get(id);
 
             if (pizza == null)
             {
@@ -50,7 +53,7 @@ namespace ContosoPizza.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody]Pizza pizza)
         {
-            await PizzaService.Add(pizza);
+            await _pizzaService.Add(pizza);
             return CreatedAtAction(nameof(Get), new { id = pizza.Id }, pizza);
         }
 
@@ -69,7 +72,7 @@ namespace ContosoPizza.Controllers
         public async Task<IActionResult> Update(int id, Pizza pizza)
         {
 
-            if (!await PizzaService.Update(id, pizza))
+            if (!await _pizzaService.Update(id, pizza))
             {
                 return NotFound();
             }
@@ -95,14 +98,14 @@ namespace ContosoPizza.Controllers
         public async Task<IActionResult> Delete(int id)
         {
 
-            var pizza = await PizzaService.Get(id);
+            var pizza = await _pizzaService.Get(id);
 
             if (pizza is null)
             {
                 return NotFound();
             }
 
-            await PizzaService.Delete(id);
+            await _pizzaService.Delete(id);
 
             return NoContent();
         }
