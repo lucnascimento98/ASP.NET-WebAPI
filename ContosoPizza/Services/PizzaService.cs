@@ -37,12 +37,12 @@ namespace ContosoPizza.Services
             return pizzas.ToListAsync();
         }
 
-        public async Task<Pizza> Get(int id) => await Db.Pizzas.FirstOrDefaultAsync(p => p.Id == id);
+        public Task<Pizza> Get(int id) => Db.Pizzas.FirstOrDefaultAsync(p => p.Id == id);
 
-        public async Task Add(Pizza pizza)
+        public Task Add(Pizza pizza)
         {
             Db.Pizzas.Add(pizza);
-            await Db.SaveChangesAsync();
+            return Db.SaveChangesAsync();
         }
 
         public async Task Delete(int id)
@@ -53,7 +53,6 @@ namespace ContosoPizza.Services
 
             Db.Pizzas.Remove(pizza);
             await Db.SaveChangesAsync();
-
         }
 
         public async Task<bool> Update(int id, Pizza requestPizza)
