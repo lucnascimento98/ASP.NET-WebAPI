@@ -18,9 +18,9 @@ namespace ContosoPizza.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Pizza>>> GetAll([FromQuery]string search, [FromQuery] bool? glutenFree, [FromQuery] int page = 1, [FromQuery] int quantity = 10 )
+        public async Task<ActionResult<List<Pizza>>> GetAll([FromQuery]string search, [FromQuery] bool? glutenFree, CancellationToken cancellationToken, [FromQuery] int page = 1, [FromQuery] int quantity = 10 )
         {
-            var Pizzas = await _pizzaService.GetAll(search, page, quantity, glutenFree);
+            var Pizzas = await _pizzaService.GetAll(search, page, quantity, glutenFree, cancellationToken);
 
             if (Pizzas.Count == 0)
             {
@@ -29,11 +29,10 @@ namespace ContosoPizza.Controllers
             return Pizzas;
         }
 
-
         [HttpGet("{id}")]
-        public async Task<ActionResult<Pizza>> Get(int id)
+        public async Task<ActionResult<Pizza>> Get(int id, CancellationToken cancellationToken)
         {
-            var pizza = await _pizzaService.Get(id);
+            var pizza = await _pizzaService.Get(id, cancellationToken);
 
             if (pizza == null)
             {
@@ -43,36 +42,18 @@ namespace ContosoPizza.Controllers
             return pizza;
         }
 
-
-
-
-
-
-
-
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody]Pizza pizza)
+        public async Task<IActionResult> Create([FromBody]Pizza pizza, CancellationToken cancellationToken)
         {
-            await _pizzaService.Add(pizza);
+            await _pizzaService.Add(pizza, cancellationToken);
             return CreatedAtAction(nameof(Get), new { id = pizza.Id }, pizza);
         }
 
-        
-
-
-
-
-
-
-
-
-
-
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, Pizza pizza)
+        public async Task<IActionResult> Update(int id, Pizza pizza, CancellationToken cancellationToken)
         {
 
-            if (!await _pizzaService.Update(id, pizza))
+            if (!await _pizzaService.Update(id, pizza, cancellationToken))
             {
                 return NotFound();
             }
@@ -80,36 +61,20 @@ namespace ContosoPizza.Controllers
             return NoContent();
         }
 
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
         {
 
-            var pizza = await _pizzaService.Get(id);
+            var pizza = await _pizzaService.Get(id, cancellationToken);
 
             if (pizza is null)
             {
                 return NotFound();
             }
 
-            await _pizzaService.Delete(id);
+            await _pizzaService.Delete(id, cancellationToken);
 
             return NoContent();
-        }
-
-        
+        } 
     }
 }

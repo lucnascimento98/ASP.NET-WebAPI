@@ -11,7 +11,7 @@ namespace ContosoPizza.Services
         {
             Db = ctx;
         }
-        public Task<List<Topping>> GetAll(string search, int page, int quantity)
+        public async Task<List<Topping>> GetAll(string search, int page, int quantity, CancellationToken cancellationToken)
         {
             var topping = Db.Toppings.Select(topping => topping);
 
@@ -24,37 +24,37 @@ namespace ContosoPizza.Services
 
             topping = topping.OrderBy(p => p.Name).Skip(skipedElements).Take(quantity);
 
-            return topping.ToListAsync();
+            return await topping.ToListAsync(cancellationToken);
         }
 
-        public Task<Topping> Get(int id) => Db.Toppings.FirstOrDefaultAsync(p => p.Id == id);
+        public Task<Topping> Get(int id, CancellationToken cancellationToken) => Db.Toppings.FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
 
-        public Task Add(Topping topping)
+        public Task Add(Topping topping, CancellationToken cancellationToken)
         {
             Db.Toppings.Add(topping);
-            return Db.SaveChangesAsync();
+            return Db.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(int id, CancellationToken cancellationToken)
         {
-            var topping = await Get(id);
+            var topping = await Get(id, cancellationToken);
             if (topping is null)
                 return;
 
             Db.Toppings.Remove(topping);
-            await Db.SaveChangesAsync();
+            await Db.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<bool> Update(int id, Topping requestTopping)
+        public async Task<bool> Update(int id, Topping requestTopping, CancellationToken cancellationToken)
         {
-            var topping = await Get(id);
+            var topping = await Get(id, cancellationToken);
             if (topping is null)
                 return false;
 
             topping.Name = requestTopping.Name;
             topping.Value = requestTopping.Value;
 
-            await Db.SaveChangesAsync();
+            await Db.SaveChangesAsync(cancellationToken);
 
             return true;
         }

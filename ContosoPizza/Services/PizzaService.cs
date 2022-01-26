@@ -14,10 +14,8 @@ namespace ContosoPizza.Services
             Db = ctx;
         }
 
-        public Task<List<Pizza>> GetAll(string search, int page, int quantity, bool? glutenFree)
+        public Task<List<Pizza>> GetAll(string search, int page, int quantity, bool? glutenFree, CancellationToken cancellationToken)
         {
-            //var Pizzas = from pizza in db.Pizzas select pizza;
-
             var pizzas = Db.Pizzas.Select(pizza => pizza);
 
             if (!String.IsNullOrWhiteSpace(search))
@@ -34,30 +32,30 @@ namespace ContosoPizza.Services
 
             pizzas = pizzas.OrderBy(p => p.Name).Skip(skipedElements).Take(quantity);
 
-            return pizzas.ToListAsync();
+            return pizzas.ToListAsync(cancellationToken);
         }
 
-        public Task<Pizza> Get(int id) => Db.Pizzas.FirstOrDefaultAsync(p => p.Id == id);
+        public Task<Pizza> Get(int id, CancellationToken cancellationToken) => Db.Pizzas.FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
 
-        public Task Add(Pizza pizza)
+        public Task Add(Pizza pizza, CancellationToken cancellationToken)
         {
             Db.Pizzas.Add(pizza);
-            return Db.SaveChangesAsync();
+            return Db.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(int id, CancellationToken cancellationToken)
         {
-            var pizza = await Get(id);
+            var pizza = await Get(id, cancellationToken);
             if (pizza is null)
                 return;
 
             Db.Pizzas.Remove(pizza);
-            await Db.SaveChangesAsync();
+            await Db.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<bool> Update(int id, Pizza requestPizza)
+        public async Task<bool> Update(int id, Pizza requestPizza, CancellationToken cancellationToken)
         {
-            var pizza = await Get(id);
+            var pizza = await Get(id, cancellationToken);
             if (pizza is null)
                 return false;
 
@@ -65,7 +63,7 @@ namespace ContosoPizza.Services
             pizza.IsGlutenFree = requestPizza.IsGlutenFree;
             pizza.Value = requestPizza.Value;
 
-            await Db.SaveChangesAsync();
+            await Db.SaveChangesAsync(cancellationToken);
 
             return true;
         }

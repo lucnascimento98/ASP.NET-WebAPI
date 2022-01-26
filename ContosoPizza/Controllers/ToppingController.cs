@@ -17,9 +17,9 @@ namespace ContosoPizza.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Topping>>> GetAll([FromQuery] string search, [FromQuery] int page = 1, [FromQuery] int quantity = 10)
-        {
-            var topping = await _toppingService.GetAll(search, page, quantity);
+        public async Task<ActionResult<List<Topping>>> GetAll([FromQuery] string search, CancellationToken cancellationToken, [FromQuery] int page = 1, [FromQuery] int quantity = 10 )
+        {            
+            var topping = await _toppingService.GetAll(search, page, quantity, cancellationToken);
 
             if (topping.Count == 0)
             {
@@ -29,9 +29,9 @@ namespace ContosoPizza.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Topping>> Get(int id)
+        public async Task<ActionResult<Topping>> Get([FromRoute] int id, CancellationToken cancellationToken)
         {
-            var topping = await _toppingService.Get(id);
+            var topping = await _toppingService.Get(id, cancellationToken);
 
             if (topping == null)
             {
@@ -42,17 +42,17 @@ namespace ContosoPizza.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Topping topping)
+        public async Task<IActionResult> Create([FromBody] Topping topping, CancellationToken cancellationToken)
         {
-            await _toppingService.Add(topping);
+            await _toppingService.Add(topping, cancellationToken);
             return CreatedAtAction(nameof(Get), new { id = topping.Id }, topping);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, Topping topping)
+        public async Task<IActionResult> Update(int id, [FromBody] Topping topping, CancellationToken cancellationToken)
         {
 
-            if (!await _toppingService.Update(id, topping))
+            if (!await _toppingService.Update(id, topping, cancellationToken))
             {
                 return NotFound();
             }
@@ -61,17 +61,17 @@ namespace ContosoPizza.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
         {
 
-            var topping = await _toppingService.Get(id);
+            var topping = await _toppingService.Get(id, cancellationToken);
 
             if (topping is null)
             {
                 return NotFound();
             }
 
-            await _toppingService.Delete(id);
+            await _toppingService.Delete(id, cancellationToken);
 
             return NoContent();
         }
