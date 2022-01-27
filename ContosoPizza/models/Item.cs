@@ -9,7 +9,7 @@
         public virtual Pizza Pizza { get; set; }
 
         public int OrderId { get; set; }
-        public virtual Order Order { get; set; } //inverse navigation property
+        public virtual Order Order { get; set; } 
 
         public virtual List<ItemTopping> ItemToppings { get; set; }
         
