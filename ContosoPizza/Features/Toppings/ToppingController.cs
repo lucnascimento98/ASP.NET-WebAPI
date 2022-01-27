@@ -34,7 +34,7 @@ namespace ContosoPizza.Controllers
             return topping;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{Id}")]
         public async Task<ActionResult<Topping>> Get([FromRoute] GetToppingRequest getToppingRequest, CancellationToken cancellationToken)
         {
             var topping = await _mediator.Send(getToppingRequest, cancellationToken);
@@ -72,8 +72,8 @@ namespace ContosoPizza.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(DeleteToppingRequest deleteTopingRequest, CancellationToken cancellationToken)
+        [HttpDelete("{Id}")]
+        public async Task<IActionResult> Delete([FromRoute]DeleteToppingRequest deleteTopingRequest, CancellationToken cancellationToken)
         {
             if (!await _mediator.Send(deleteTopingRequest, cancellationToken))
             {
