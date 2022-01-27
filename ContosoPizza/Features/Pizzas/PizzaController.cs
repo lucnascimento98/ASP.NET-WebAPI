@@ -33,8 +33,8 @@ namespace ContosoPizza.Controllers
             return Pizzas;
         }
 
-        [HttpGet("id")]
-        public async Task<ActionResult<Pizza>> Get(GetPizzaRequest getPizzaRequest, CancellationToken cancellationToken)
+        [HttpGet("/Pizza/Get")]
+        public async Task<ActionResult<Pizza>> Get([FromQuery]GetPizzaRequest getPizzaRequest, CancellationToken cancellationToken)
         {
             var pizza = await _mediator.Send(getPizzaRequest, cancellationToken);
 
@@ -71,8 +71,8 @@ namespace ContosoPizza.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(DeletePizzaRequest deletePizzaRequest, CancellationToken cancellationToken)
+        [HttpDelete]
+        public async Task<IActionResult> Delete([FromQuery]DeletePizzaRequest deletePizzaRequest, CancellationToken cancellationToken)
         {
             if (!await _mediator.Send(deletePizzaRequest, cancellationToken))
             {
