@@ -22,16 +22,8 @@ namespace ContosoPizza.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Pizza>>> GetAll([FromQuery]string search, [FromQuery] bool? glutenFree, CancellationToken cancellationToken, [FromQuery] int page = 1, [FromQuery] int quantity = 10 )
+        public async Task<ActionResult<List<Pizza>>> GetAll([FromQuery] GetAllPizzaRequest getAllPizzaRequest, CancellationToken cancellationToken)
         {
-            GetAllPizzaRequest getAllPizzaRequest = new()
-            {
-                GlutenFree = glutenFree,
-                Quantity = quantity,
-                Page = page,
-                Search = search
-            };
-
             var Pizzas = await _mediator.Send(getAllPizzaRequest, cancellationToken);
 
             if (Pizzas.Count == 0)
@@ -42,12 +34,8 @@ namespace ContosoPizza.Controllers
         }
 
         [HttpGet("id")]
-        public async Task<ActionResult<Pizza>> Get(int id, CancellationToken cancellationToken)
+        public async Task<ActionResult<Pizza>> Get(GetPizzaRequest getPizzaRequest, CancellationToken cancellationToken)
         {
-            GetPizzaRequest getPizzaRequest = new()
-            {
-                Id = id,
-            };
             var pizza = await _mediator.Send(getPizzaRequest, cancellationToken);
 
             if (pizza == null)
@@ -84,13 +72,8 @@ namespace ContosoPizza.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
+        public async Task<IActionResult> Delete(DeletePizzaRequest deletePizzaRequest, CancellationToken cancellationToken)
         {
-            DeletePizzaRequest deletePizzaRequest = new()
-            {
-                Id = id
-            };
-
             if (!await _mediator.Send(deletePizzaRequest, cancellationToken))
             {
                 return NotFound();

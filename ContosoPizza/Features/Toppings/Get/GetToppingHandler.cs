@@ -12,9 +12,9 @@ namespace ContosoPizza.Features.Toppings.Get
         {
             this.db = db;
         }
-        public async Task<Topping> Handle(GetToppingRequest request, CancellationToken cancellationToken)
+        public Task<Topping> Handle(GetToppingRequest request, CancellationToken cancellationToken)
         {
-            return await db.Toppings.FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
+            return db.Toppings.FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
         }
     }
 }

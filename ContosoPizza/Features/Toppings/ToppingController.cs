@@ -23,15 +23,8 @@ namespace ContosoPizza.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Topping>>> GetAll([FromQuery] string search, CancellationToken cancellationToken, [FromQuery] int page = 1, [FromQuery] int quantity = 10 )
+        public async Task<ActionResult<List<Topping>>> GetAll([FromQuery] GetAllToppingRequest getAllToppingRequest, CancellationToken cancellationToken)
         {
-            GetAllToppingRequest getAllToppingRequest = new()
-            {
-                Quantity = quantity,
-                Page = page,
-                Search = search
-            };
-
             var topping = await _mediator.Send(getAllToppingRequest, cancellationToken);
 
             if (topping.Count == 0)
@@ -42,12 +35,8 @@ namespace ContosoPizza.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Topping>> Get([FromRoute] int id, CancellationToken cancellationToken)
+        public async Task<ActionResult<Topping>> Get([FromRoute] GetToppingRequest getToppingRequest, CancellationToken cancellationToken)
         {
-            GetToppingRequest getToppingRequest = new()
-            {
-                Id = id,
-            };
             var topping = await _mediator.Send(getToppingRequest, cancellationToken);
 
             if (topping == null)
@@ -84,14 +73,8 @@ namespace ContosoPizza.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
+        public async Task<IActionResult> Delete(DeleteToppingRequest deleteTopingRequest, CancellationToken cancellationToken)
         {
-
-            DeleteToppingRequest deleteTopingRequest = new()
-            {
-                Id = id
-            };
-
             if (!await _mediator.Send(deleteTopingRequest, cancellationToken))
             {
                 return NotFound();
