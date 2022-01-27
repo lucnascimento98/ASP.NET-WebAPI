@@ -12,7 +12,7 @@ namespace ContosoPizza.Features.Toppings.GetAll
         {
             this.db = db;
         }
-        public async Task<List<Topping>> Handle(GetAllToppingRequest request, CancellationToken cancellationToken)
+        public Task<List<Topping>> Handle(GetAllToppingRequest request, CancellationToken cancellationToken)
         {
             var topping = db.Toppings.Select(topping => topping);
 
@@ -25,7 +25,7 @@ namespace ContosoPizza.Features.Toppings.GetAll
 
             topping = topping.OrderBy(p => p.Name).Skip(skipedElements).Take(request.Quantity);
 
-            return await topping.ToListAsync(cancellationToken);
+            return topping.ToListAsync(cancellationToken);
         }
     }
 }
