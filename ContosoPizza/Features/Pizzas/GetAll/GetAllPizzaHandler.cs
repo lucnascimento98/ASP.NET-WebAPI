@@ -12,7 +12,7 @@ namespace ContosoPizza.Features.Pizzas.GetAll
         {
             this.db = db;
         }
-        public Task<List<Pizza>> Handle(GetAllPizzaRequest request, CancellationToken cancellationToken)
+        public async Task<List<Pizza>> Handle(GetAllPizzaRequest request, CancellationToken cancellationToken)
         {
             var pizzas = db.Pizzas.Select(pizza => pizza);
 
@@ -30,7 +30,7 @@ namespace ContosoPizza.Features.Pizzas.GetAll
 
             pizzas = pizzas.OrderBy(p => p.Name).Skip(skipedElements).Take(request.Quantity);
 
-            return pizzas.ToListAsync(cancellationToken);
+            return await pizzas.ToListAsync(cancellationToken);
         }
     }
 }
