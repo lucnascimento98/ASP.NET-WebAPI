@@ -3,6 +3,8 @@ using ContosoPizza.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using FluentValidation;
+using ContosoPizza.PipelineBehaviors;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,8 +18,10 @@ builder.Services.AddDbContext<ContosoPizzaContext>((sp, options) => options.UseS
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 builder.Services.AddMediatR(Assembly.GetEntryAssembly());
+
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+builder.Services.AddValidatorsFromAssembly(Assembly.GetEntryAssembly());
 
 var app = builder.Build();
 
