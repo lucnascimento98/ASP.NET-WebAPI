@@ -7,9 +7,7 @@ namespace ContosoPizza.Features.Pizzas.Add
         public AddPizzaRequestValidator()
         {
             RuleFor(p => p.Value)
-                .NotEmpty();
-
-            RuleFor(p => p.Value)
+                .NotEmpty()
                 .GreaterThanOrEqualTo(0)
                 .WithMessage("Value must be positive.");
 
