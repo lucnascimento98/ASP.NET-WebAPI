@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace ContosoPizza.Models
 {
@@ -8,7 +8,7 @@ namespace ContosoPizza.Models
         public string Name { get; set; }
         public double Value { get; set; }
         public bool IsGlutenFree { get; set; }
-        
+
         public virtual List<Item> Items { get; set; }
     }
 }
