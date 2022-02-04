@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using FluentValidation;
 using ContosoPizza.PipelineBehaviors;
+using ContosoPizza.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,5 +36,7 @@ if (app.Environment.IsDevelopment())
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseMiddleware(typeof(ErrorMiddleware));
 
 app.Run();
