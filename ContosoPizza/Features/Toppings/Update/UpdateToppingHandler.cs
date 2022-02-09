@@ -18,8 +18,8 @@ namespace ContosoPizza.Features.Toppings.Update
             if (topping is null)
                 return false;
 
-            topping.Name = request.Topping.Name;
-            topping.Value = request.Topping.Value;
+            topping.Name = request.Name;
+            topping.Value = request.Value;
 
             await db.SaveChangesAsync(cancellationToken);
 

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ContosoPizza.Features.Toppings.Get
 {
-    public class GetToppingHandler : IRequestHandler<GetToppingRequest, Topping>
+    public class GetToppingHandler : IRequestHandler<GetToppingRequest, ToppingDTO>
     {
         private readonly ContosoPizzaContext db;
 
@@ -12,9 +12,18 @@ namespace ContosoPizza.Features.Toppings.Get
         {
             this.db = db;
         }
-        public Task<Topping> Handle(GetToppingRequest request, CancellationToken cancellationToken)
+        public async Task<ToppingDTO> Handle(GetToppingRequest request, CancellationToken cancellationToken)
         {
-            return db.Toppings.FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
+            var topping = await db.Toppings.FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
+            if (topping == null) 
+                return null;
+
+            return new ToppingDTO()
+            {
+                Id = topping.Id,
+                Name = topping.Name,
+                Value = topping.Value
+            };
         }
     }
 }

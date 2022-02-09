@@ -23,7 +23,7 @@ namespace ContosoPizza.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Topping>>> GetAll([FromQuery] GetAllToppingRequest getAllToppingRequest, CancellationToken cancellationToken)
+        public async Task<ActionResult<List<ToppingDTO>>> GetAll([FromQuery] GetAllToppingRequest getAllToppingRequest, CancellationToken cancellationToken)
         {
             var topping = await _mediator.Send(getAllToppingRequest, cancellationToken);
 
@@ -35,7 +35,7 @@ namespace ContosoPizza.Controllers
         }
 
         [HttpGet("{Id}")]
-        public async Task<ActionResult<Topping>> Get([FromRoute] GetToppingRequest getToppingRequest, CancellationToken cancellationToken)
+        public async Task<ActionResult<ToppingDTO>> Get([FromRoute] GetToppingRequest getToppingRequest, CancellationToken cancellationToken)
         {
             var topping = await _mediator.Send(getToppingRequest, cancellationToken);
 
@@ -55,13 +55,14 @@ namespace ContosoPizza.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] Topping topping, CancellationToken cancellationToken)
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateToppingRequestDTO toppingDTO, CancellationToken cancellationToken)
         {
 
             UpdateToppingRequest updateToppingRequest = new()
             {
-                Topping = topping,
-                Id = id
+                Id = id,
+                Name = toppingDTO.Name,
+                Value = toppingDTO.Value,
             };
 
             if (!await _mediator.Send(updateToppingRequest, cancellationToken))

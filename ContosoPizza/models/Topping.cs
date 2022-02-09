@@ -9,4 +9,12 @@
         public virtual List<ItemTopping> ItemToppings { get; set; }
 
     }
+
+    public class ToppingDTO
+    {
+        public int Id { get; set; }
+        public string Name { set; get; }
+        public double Value { get; set; }
+
+    }
 }

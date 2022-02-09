@@ -22,19 +22,19 @@ namespace ContosoPizza.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Pizza>>> GetAll([FromQuery] GetAllPizzaRequest getAllPizzaRequest, CancellationToken cancellationToken)
+        public async Task<ActionResult<List<PizzaDTO>>> GetAll([FromQuery] GetAllPizzaRequest getAllPizzaRequest, CancellationToken cancellationToken)
         {
-            var Pizzas = await _mediator.Send(getAllPizzaRequest, cancellationToken);
+            var pizzas = await _mediator.Send(getAllPizzaRequest, cancellationToken);
 
-            if (Pizzas.Count == 0)
+            if (pizzas.Count == 0)
             {
                 return NoContent();
             }
-            return Pizzas;
+            return pizzas;
         }
 
         [HttpGet("{Id}")]
-        public async Task<ActionResult<Pizza>> Get([FromRoute]GetPizzaRequest getPizzaRequest, CancellationToken cancellationToken)
+        public async Task<ActionResult<PizzaDTO>> Get([FromRoute]GetPizzaRequest getPizzaRequest, CancellationToken cancellationToken)
         {
             var pizza = await _mediator.Send(getPizzaRequest, cancellationToken);
 
@@ -55,12 +55,14 @@ namespace ContosoPizza.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] Pizza pizza, CancellationToken cancellationToken)
+        public async Task<IActionResult> Update(int id, [FromBody] UpdatePizzaRequestDTO pizzaDTO, CancellationToken cancellationToken)
         {
             UpdatePizzaRequest updatePizzaRequest = new()
             {
-                Pizza = pizza,
-                Id = id
+                Id = id,
+                Name = pizzaDTO.Name,
+                Value = pizzaDTO.Value,
+                IsGlutenFree = pizzaDTO.IsGlutenFree
             };
 
             if (!await _mediator.Send(updatePizzaRequest, cancellationToken))

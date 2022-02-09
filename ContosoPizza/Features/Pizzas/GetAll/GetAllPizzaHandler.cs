@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ContosoPizza.Features.Pizzas.GetAll
 {
-    public class GetAllPizzaHandler : IRequestHandler<GetAllPizzaRequest, List<Pizza>>
+    public class GetAllPizzaHandler : IRequestHandler<GetAllPizzaRequest, List<PizzaDTO>>
     {
         private readonly ContosoPizzaContext db;
 
@@ -12,7 +12,7 @@ namespace ContosoPizza.Features.Pizzas.GetAll
         {
             this.db = db;
         }
-        public Task<List<Pizza>> Handle(GetAllPizzaRequest request, CancellationToken cancellationToken)
+        public async Task<List<PizzaDTO>> Handle(GetAllPizzaRequest request, CancellationToken cancellationToken)
         {
             var pizzas = db.Pizzas.Select(pizza => pizza);
 
@@ -30,7 +30,20 @@ namespace ContosoPizza.Features.Pizzas.GetAll
 
             pizzas = pizzas.OrderBy(p => p.Name).Skip(skipedElements).Take(request.Quantity);
 
-            return pizzas.ToListAsync(cancellationToken);
+
+            List<PizzaDTO> pizzasDTO = new();
+
+            foreach (var pizza in await pizzas.ToListAsync(cancellationToken))
+            {
+                pizzasDTO.Add(new PizzaDTO
+                {
+                    Id = pizza.Id,
+                    Name = pizza.Name,
+                    IsGlutenFree = pizza.IsGlutenFree
+                });
+            }
+
+            return pizzasDTO;
         }
     }
 }

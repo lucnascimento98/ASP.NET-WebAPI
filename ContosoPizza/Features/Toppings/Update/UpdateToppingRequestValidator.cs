@@ -6,12 +6,12 @@ namespace ContosoPizza.Features.Toppings.Update
     {
         public UpdateToppingRequestValidator()
         {
-            RuleFor(p => p.Topping.Value)
+            RuleFor(p => p.Value)
                 .NotEmpty()
                 .GreaterThanOrEqualTo(0)
                 .WithMessage("Value must be positive.");
 
-            RuleFor(p => p.Topping.Name)
+            RuleFor(p => p.Name)
                 .NotEmpty();
         }
     }

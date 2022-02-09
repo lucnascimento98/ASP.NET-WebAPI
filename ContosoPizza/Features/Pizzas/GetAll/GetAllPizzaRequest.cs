@@ -3,7 +3,7 @@ using MediatR;
 
 namespace ContosoPizza.Features.Pizzas.GetAll
 {
-    public class GetAllPizzaRequest : IRequest<List<Pizza>>
+    public class GetAllPizzaRequest : IRequest<List<PizzaDTO>>
     {
         public string Search { get; set; }
         public int Page { get; set; } = 1;
