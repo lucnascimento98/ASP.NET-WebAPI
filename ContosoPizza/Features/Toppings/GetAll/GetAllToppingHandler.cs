@@ -1,4 +1,5 @@
-﻿using ContosoPizza.Models;
+﻿using ContosoPizza.DTOs;
+using ContosoPizza.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,17 +26,12 @@ namespace ContosoPizza.Features.Toppings.GetAll
 
             toppings = toppings.OrderBy(p => p.Name).Skip(skipedElements).Take(request.Quantity);
             
-            List<ToppingDTO> toppingsDTO = new();
-
-            foreach (var topping in await toppings.ToListAsync(cancellationToken))
+            List<ToppingDTO> toppingsDTO = await toppings.Select(t => new ToppingDTO()
             {
-                toppingsDTO.Add(new ToppingDTO
-                {
-                    Id = topping.Id,
-                    Name = topping.Name,
-                    Value = topping.Value
-                });
-            }
+                Id = t.Id,
+                Name = t.Name,
+                Value = t.Value
+            }).ToListAsync(cancellationToken);
 
             return toppingsDTO;
         }

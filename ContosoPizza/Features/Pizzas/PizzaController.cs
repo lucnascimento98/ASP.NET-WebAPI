@@ -7,6 +7,7 @@ using ContosoPizza.Features.Pizzas;
 using ContosoPizza.Features.Pizzas.Get;
 using ContosoPizza.Features.Pizzas.GetAll;
 using ContosoPizza.Features.Pizzas.Update;
+using ContosoPizza.DTOs;
 
 namespace ContosoPizza.Controllers
 {
@@ -60,9 +61,7 @@ namespace ContosoPizza.Controllers
             UpdatePizzaRequest updatePizzaRequest = new()
             {
                 Id = id,
-                Name = pizzaDTO.Name,
-                Value = pizzaDTO.Value,
-                IsGlutenFree = pizzaDTO.IsGlutenFree
+                Pizza = pizzaDTO
             };
 
             if (!await _mediator.Send(updatePizzaRequest, cancellationToken))

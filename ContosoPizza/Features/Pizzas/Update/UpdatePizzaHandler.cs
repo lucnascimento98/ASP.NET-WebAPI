@@ -18,9 +18,9 @@ namespace ContosoPizza.Features.Pizzas.Update
             if (pizza is null)
                 return false;
 
-            pizza.Name = request.Name;
-            pizza.IsGlutenFree = request.IsGlutenFree;
-            pizza.Value = request.Value;
+            pizza.Name = request.Pizza.Name;
+            pizza.IsGlutenFree = request.Pizza.IsGlutenFree;
+            pizza.Value = request.Pizza.Value;
 
             await db.SaveChangesAsync(cancellationToken);
 

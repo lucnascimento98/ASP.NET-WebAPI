@@ -1,4 +1,5 @@
-﻿using ContosoPizza.Features.Toppings.Add;
+﻿using ContosoPizza.DTOs;
+using ContosoPizza.Features.Toppings.Add;
 using ContosoPizza.Features.Toppings.Delete;
 using ContosoPizza.Features.Toppings.Get;
 using ContosoPizza.Features.Toppings.GetAll;
@@ -61,8 +62,7 @@ namespace ContosoPizza.Controllers
             UpdateToppingRequest updateToppingRequest = new()
             {
                 Id = id,
-                Name = toppingDTO.Name,
-                Value = toppingDTO.Value,
+                Topping = toppingDTO
             };
 
             if (!await _mediator.Send(updateToppingRequest, cancellationToken))

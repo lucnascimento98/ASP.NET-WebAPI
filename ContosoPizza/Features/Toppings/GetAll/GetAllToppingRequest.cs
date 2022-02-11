@@ -1,4 +1,4 @@
-﻿using ContosoPizza.Models;
+﻿using ContosoPizza.DTOs;
 using MediatR;
 
 namespace ContosoPizza.Features.Toppings.GetAll
