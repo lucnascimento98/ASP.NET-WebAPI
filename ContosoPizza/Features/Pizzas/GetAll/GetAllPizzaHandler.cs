@@ -1,10 +1,11 @@
-﻿using ContosoPizza.Models;
+﻿using ContosoPizza.DTOs;
+using ContosoPizza.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace ContosoPizza.Features.Pizzas.GetAll
 {
-    public class GetAllPizzaHandler : IRequestHandler<GetAllPizzaRequest, List<Pizza>>
+    public class GetAllPizzaHandler : IRequestHandler<GetAllPizzaRequest, List<PizzaDTO>>
     {
         private readonly ContosoPizzaContext db;
 
@@ -12,7 +13,7 @@ namespace ContosoPizza.Features.Pizzas.GetAll
         {
             this.db = db;
         }
-        public Task<List<Pizza>> Handle(GetAllPizzaRequest request, CancellationToken cancellationToken)
+        public async Task<List<PizzaDTO>> Handle(GetAllPizzaRequest request, CancellationToken cancellationToken)
         {
             var pizzas = db.Pizzas.Select(pizza => pizza);
 
@@ -30,7 +31,16 @@ namespace ContosoPizza.Features.Pizzas.GetAll
 
             pizzas = pizzas.OrderBy(p => p.Name).Skip(skipedElements).Take(request.Quantity);
 
-            return pizzas.ToListAsync(cancellationToken);
+
+            List<PizzaDTO> pizzasDTO = await pizzas.Select(p => new PizzaDTO()
+            {
+                Id = p.Id,
+                Name = p.Name,
+                IsGlutenFree = p.IsGlutenFree
+            }).ToListAsync(cancellationToken);
+
+
+            return pizzasDTO;
         }
     }
 }
