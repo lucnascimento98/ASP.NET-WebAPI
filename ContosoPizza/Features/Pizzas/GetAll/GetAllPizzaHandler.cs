@@ -32,17 +32,13 @@ namespace ContosoPizza.Features.Pizzas.GetAll
             pizzas = pizzas.OrderBy(p => p.Name).Skip(skipedElements).Take(request.Quantity);
 
 
-            List<PizzaDTO> pizzasDTO = new();
-
-            foreach (var pizza in await pizzas.ToListAsync(cancellationToken))
+            List<PizzaDTO> pizzasDTO = await pizzas.Select(p => new PizzaDTO()
             {
-                pizzasDTO.Add(new PizzaDTO
-                {
-                    Id = pizza.Id,
-                    Name = pizza.Name,
-                    IsGlutenFree = pizza.IsGlutenFree
-                });
-            }
+                Id = p.Id,
+                Name = p.Name,
+                IsGlutenFree = p.IsGlutenFree
+            }).ToListAsync(cancellationToken);
+
 
             return pizzasDTO;
         }
