@@ -28,6 +28,8 @@ namespace ContosoPizza.Features.Pizzas.GetAll
                 pizzas = pizzas.Where(pizzas => pizzas.IsGlutenFree == request.GlutenFree.Value);
             }
 
+            var total = await pizzas.CountAsync();
+
             List<PizzaDTO> list = await pizzas.Select(p => new PizzaDTO()
             {
                 Id = p.Id,
@@ -35,7 +37,6 @@ namespace ContosoPizza.Features.Pizzas.GetAll
                 IsGlutenFree = p.IsGlutenFree
             }).PaginateBy(request, p => p.Name).ToListAsync(cancellationToken);
 
-            var total = list.Count;
 
             return new PageResult<PizzaDTO>(request, total, list);
         }

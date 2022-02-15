@@ -23,6 +23,8 @@ namespace ContosoPizza.Features.Toppings.GetAll
                 toppings = toppings.Where(pizza => pizza.Name.Contains(request.Search));
             }
 
+            var total = await toppings.CountAsync();
+
             List<ToppingDTO> list = await toppings.Select(t => new ToppingDTO()
             {
                 Id = t.Id,
@@ -30,7 +32,6 @@ namespace ContosoPizza.Features.Toppings.GetAll
                 Value = t.Value
             }).PaginateBy(request, p => p.Name).ToListAsync(cancellationToken);
 
-            var total = list.Count;
 
             return new PageResult<ToppingDTO>(request, total, list);
 
