@@ -35,7 +35,9 @@ namespace ContosoPizza.Features.Pizzas.GetAll
                 IsGlutenFree = p.IsGlutenFree
             }).PaginateBy(request, p => p.Name).ToListAsync(cancellationToken);
 
-            return new PageResult<PizzaDTO>(list);
+            var total = list.Count;
+
+            return new PageResult<PizzaDTO>(request, total, list);
         }
     }
 }

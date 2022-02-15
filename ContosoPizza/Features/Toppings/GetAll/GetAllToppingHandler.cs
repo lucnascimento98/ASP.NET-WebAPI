@@ -6,7 +6,7 @@ using Nudes.Paginator.Core;
 
 namespace ContosoPizza.Features.Toppings.GetAll
 {
-    public class GetAllToppingHandler :PageRequest, IRequestHandler<GetAllToppingRequest, PageResult<ToppingDTO>>
+    public class GetAllToppingHandler : IRequestHandler<GetAllToppingRequest, PageResult<ToppingDTO>>
     {
         private readonly ContosoPizzaContext db;
 
@@ -30,7 +30,9 @@ namespace ContosoPizza.Features.Toppings.GetAll
                 Value = t.Value
             }).PaginateBy(request, p => p.Name).ToListAsync(cancellationToken);
 
-            return new PageResult<ToppingDTO>(list);
+            var total = list.Count;
+
+            return new PageResult<ToppingDTO>(request, total, list);
 
             
             
