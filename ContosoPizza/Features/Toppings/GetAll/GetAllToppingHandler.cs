@@ -1,6 +1,7 @@
 ﻿using ContosoPizza.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Nudes.Paginator.Core;
 
 namespace ContosoPizza.Features.Toppings.GetAll
 {
@@ -21,11 +22,13 @@ namespace ContosoPizza.Features.Toppings.GetAll
                 topping = topping.Where(pizza => pizza.Name.Contains(request.Search));
             }
 
-            int skipedElements = (request.Page - 1) * request.Quantity;
-
-            topping = topping.OrderBy(p => p.Name).Skip(skipedElements).Take(request.Quantity);
-
-            return topping.ToListAsync(cancellationToken);
+            return topping.PaginateBy(new PageRequest()
+            {
+                Field = "name",
+                Page = request.Page,
+                PageSize = request.Quantity,
+                SortDirection = SortDirection.Ascending
+            }).ToListAsync(cancellationToken);
         }
     }
 }

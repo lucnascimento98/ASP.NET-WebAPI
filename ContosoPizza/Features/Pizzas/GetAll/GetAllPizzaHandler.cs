@@ -1,6 +1,7 @@
 ﻿using ContosoPizza.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Nudes.Paginator.Core;
 
 namespace ContosoPizza.Features.Pizzas.GetAll
 {
@@ -26,11 +27,13 @@ namespace ContosoPizza.Features.Pizzas.GetAll
                 pizzas = pizzas.Where(pizzas => pizzas.IsGlutenFree == request.GlutenFree.Value);
             }
 
-            int skipedElements = (request.Page - 1) * request.Quantity;
-
-            pizzas = pizzas.OrderBy(p => p.Name).Skip(skipedElements).Take(request.Quantity);
-
-            return pizzas.ToListAsync(cancellationToken);
+            return pizzas.PaginateBy(new PageRequest()
+            {
+                Field = "name",
+                SortDirection = SortDirection.Ascending,
+                Page = request.Page,
+                PageSize = request.Quantity
+            }).ToListAsync(cancellationToken);
         }
     }
 }
