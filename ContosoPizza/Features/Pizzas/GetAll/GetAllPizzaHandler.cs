@@ -6,7 +6,7 @@ using Nudes.Paginator.Core;
 
 namespace ContosoPizza.Features.Pizzas.GetAll
 {
-    public class GetAllPizzaHandler : IRequestHandler<GetAllPizzaRequest, List<PizzaDTO>>
+    public class GetAllPizzaHandler : IRequestHandler<GetAllPizzaRequest, PageResult<PizzaDTO>>
     {
         private readonly ContosoPizzaContext db;
 
@@ -14,7 +14,7 @@ namespace ContosoPizza.Features.Pizzas.GetAll
         {
             this.db = db;
         }
-        public async Task<List<PizzaDTO>> Handle(GetAllPizzaRequest request, CancellationToken cancellationToken)
+        public async Task<PageResult<PizzaDTO>> Handle(GetAllPizzaRequest request, CancellationToken cancellationToken)
         {
             var pizzas = db.Pizzas.Select(pizza => pizza);
 
@@ -28,19 +28,14 @@ namespace ContosoPizza.Features.Pizzas.GetAll
                 pizzas = pizzas.Where(pizzas => pizzas.IsGlutenFree == request.GlutenFree.Value);
             }
 
-            return await pizzas.Select(p => new PizzaDTO()
+            List<PizzaDTO> list = await pizzas.Select(p => new PizzaDTO()
             {
                 Id = p.Id,
                 Name = p.Name,
                 IsGlutenFree = p.IsGlutenFree
-            }).PaginateBy(new PageRequest()
-            {
-                Field = "name",
-                SortDirection = SortDirection.Ascending,
-                Page = request.Page,
-                PageSize = request.Quantity
-            }).ToListAsync(cancellationToken);
+            }).PaginateBy(request, p => p.Name).ToListAsync(cancellationToken);
 
+            return new PageResult<PizzaDTO>(list);
         }
     }
 }
