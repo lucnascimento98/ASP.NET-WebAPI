@@ -1,10 +1,11 @@
-﻿using ContosoPizza.Models;
+﻿using ContosoPizza.DTOs;
+using ContosoPizza.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace ContosoPizza.Features.Pizzas.Get
 {
-    public class GetPizzaHandler : IRequestHandler<GetPizzaRequest, Pizza>
+    public class GetPizzaHandler : IRequestHandler<GetPizzaRequest, PizzaDTO>
     {
         private readonly ContosoPizzaContext db;
 
@@ -12,9 +13,19 @@ namespace ContosoPizza.Features.Pizzas.Get
         {
             this.db = db;
         }
-        public Task<Pizza> Handle(GetPizzaRequest request, CancellationToken cancellationToken)
+        public async Task<PizzaDTO> Handle(GetPizzaRequest request, CancellationToken cancellationToken)
         {
-           return db.Pizzas.FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
+            var pizza = await db.Pizzas.FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
+            if (pizza == null) 
+                return null;
+
+            return new PizzaDTO()
+            {
+                Id = pizza.Id,
+                Name = pizza.Name,
+                Value = pizza.Value,
+                IsGlutenFree = pizza.IsGlutenFree
+            };
         }
     }
 }

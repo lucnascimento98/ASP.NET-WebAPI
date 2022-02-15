@@ -1,11 +1,12 @@
-﻿using ContosoPizza.Models;
+﻿using ContosoPizza.DTOs;
+using ContosoPizza.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Nudes.Paginator.Core;
 
 namespace ContosoPizza.Features.Toppings.GetAll
 {
-    public class GetAllToppingHandler : IRequestHandler<GetAllToppingRequest, List<Topping>>
+    public class GetAllToppingHandler : IRequestHandler<GetAllToppingRequest, List<ToppingDTO>>
     {
         private readonly ContosoPizzaContext db;
 
@@ -13,22 +14,29 @@ namespace ContosoPizza.Features.Toppings.GetAll
         {
             this.db = db;
         }
-        public Task<List<Topping>> Handle(GetAllToppingRequest request, CancellationToken cancellationToken)
+        public async Task<List<ToppingDTO>> Handle(GetAllToppingRequest request, CancellationToken cancellationToken)
         {
-            var topping = db.Toppings.Select(topping => topping);
+            var toppings = db.Toppings.Select(topping => topping);
 
             if (!String.IsNullOrWhiteSpace(request.Search))
             {
-                topping = topping.Where(pizza => pizza.Name.Contains(request.Search));
+                toppings = toppings.Where(pizza => pizza.Name.Contains(request.Search));
             }
 
-            return topping.PaginateBy(new PageRequest()
+            return await toppings.Select(t => new ToppingDTO()
+            {
+                Id = t.Id,
+                Name = t.Name,
+                Value = t.Value
+            }).PaginateBy(new PageRequest()
             {
                 Field = "name",
                 Page = request.Page,
                 PageSize = request.Quantity,
                 SortDirection = SortDirection.Ascending
             }).ToListAsync(cancellationToken);
+
+            
         }
     }
 }
