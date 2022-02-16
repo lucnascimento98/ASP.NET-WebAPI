@@ -2,10 +2,12 @@
 using ContosoPizza.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Nudes.Retornator.AspnetCore.Errors;
+using Nudes.Retornator.Core;
 
 namespace ContosoPizza.Features.Pizzas.Get
 {
-    public class GetPizzaHandler : IRequestHandler<GetPizzaRequest, PizzaDTO>
+    public class GetPizzaHandler : IRequestHandler<GetPizzaRequest, ResultOf<PizzaDTO>>
     {
         private readonly ContosoPizzaContext db;
 
@@ -13,11 +15,11 @@ namespace ContosoPizza.Features.Pizzas.Get
         {
             this.db = db;
         }
-        public async Task<PizzaDTO> Handle(GetPizzaRequest request, CancellationToken cancellationToken)
+        public async Task<ResultOf<PizzaDTO>> Handle(GetPizzaRequest request, CancellationToken cancellationToken)
         {
             var pizza = await db.Pizzas.FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
-            if (pizza == null) 
-                return null;
+            if (pizza == null)
+                return new NotFoundError();
 
             return new PizzaDTO()
             {

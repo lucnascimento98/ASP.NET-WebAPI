@@ -3,10 +3,11 @@ using ContosoPizza.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Nudes.Paginator.Core;
+using Nudes.Retornator.Core;
 
 namespace ContosoPizza.Features.Pizzas.GetAll
 {
-    public class GetAllPizzaHandler : IRequestHandler<GetAllPizzaRequest, PageResult<PizzaDTO>>
+    public class GetAllPizzaHandler : IRequestHandler<GetAllPizzaRequest, ResultOf<PageResult<PizzaDTO>>>
     {
         private readonly ContosoPizzaContext db;
 
@@ -14,7 +15,7 @@ namespace ContosoPizza.Features.Pizzas.GetAll
         {
             this.db = db;
         }
-        public async Task<PageResult<PizzaDTO>> Handle(GetAllPizzaRequest request, CancellationToken cancellationToken)
+        public async Task<ResultOf<PageResult<PizzaDTO>>> Handle(GetAllPizzaRequest request, CancellationToken cancellationToken)
         {
             var pizzas = db.Pizzas.Select(pizza => pizza);
 

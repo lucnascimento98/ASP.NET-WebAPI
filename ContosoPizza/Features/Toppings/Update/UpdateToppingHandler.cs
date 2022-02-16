@@ -1,10 +1,12 @@
 ﻿using ContosoPizza.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Nudes.Retornator.AspnetCore.Errors;
+using Nudes.Retornator.Core;
 
 namespace ContosoPizza.Features.Toppings.Update
 {
-    public class UpdateToppingHandler : IRequestHandler<UpdateToppingRequest, bool>
+    public class UpdateToppingHandler : IRequestHandler<UpdateToppingRequest, Result>
     {
         private readonly ContosoPizzaContext db;
 
@@ -12,18 +14,18 @@ namespace ContosoPizza.Features.Toppings.Update
         {
             this.db = db;
         }
-        public async Task<bool> Handle(UpdateToppingRequest request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(UpdateToppingRequest request, CancellationToken cancellationToken)
         {
             var topping = await db.Toppings.FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
             if (topping is null)
-                return false;
+                return new NotFoundError();
 
             topping.Name = request.Topping.Name;
             topping.Value = request.Topping.Value;
 
             await db.SaveChangesAsync(cancellationToken);
 
-            return true;
+            return Result.Success;
         }
     }
 }

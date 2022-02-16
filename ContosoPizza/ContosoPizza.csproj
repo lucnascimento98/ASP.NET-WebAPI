@@ -28,7 +28,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Nudes.Paginator" Version="1.0.494" />
+    <PackageReference Include="Nudes.Paginator" Version="1.0.738" />
+    <PackageReference Include="Nudes.Retornator.AspnetCore" Version="1.0.605" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
