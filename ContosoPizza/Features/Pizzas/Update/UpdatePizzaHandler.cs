@@ -1,10 +1,12 @@
 ﻿using ContosoPizza.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Nudes.Retornator.AspnetCore.Errors;
+using Nudes.Retornator.Core;
 
 namespace ContosoPizza.Features.Pizzas.Update
 {
-    public class UpdatePizzaHandler : IRequestHandler<UpdatePizzaRequest, bool>
+    public class UpdatePizzaHandler : IRequestHandler<UpdatePizzaRequest, Result>
     {
         private readonly ContosoPizzaContext db;
 
@@ -12,11 +14,11 @@ namespace ContosoPizza.Features.Pizzas.Update
         {
             this.db = db;
         }
-        public async Task<bool> Handle(UpdatePizzaRequest request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(UpdatePizzaRequest request, CancellationToken cancellationToken)
         {
             var pizza = await db.Pizzas.FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
             if (pizza is null)
-                return false;
+                return  new NotFoundError();
 
             pizza.Name = request.Pizza.Name;
             pizza.IsGlutenFree = request.Pizza.IsGlutenFree;
@@ -24,7 +26,7 @@ namespace ContosoPizza.Features.Pizzas.Update
 
             await db.SaveChangesAsync(cancellationToken);
 
-            return true;
+            return Result.Success;
         }
     }
 }

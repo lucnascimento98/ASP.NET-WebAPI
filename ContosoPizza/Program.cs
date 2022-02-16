@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using FluentValidation;
 using ContosoPizza.PipelineBehaviors;
-using ContosoPizza.Middlewares;
+using Nudes.Retornator.AspnetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +14,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddRetornator();
+builder.Services.AddErrorTranslator(ErrorHttpTranslatorBuilder.Default);
 builder.Services.AddDbContext<ContosoPizzaContext>((sp, options) => options.UseSqlServer(sp.GetRequiredService<IConfiguration>().GetConnectionString("Default")));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -36,7 +37,5 @@ if (app.Environment.IsDevelopment())
 app.UseAuthorization();
 
 app.MapControllers();
-
-app.UseMiddleware(typeof(ErrorMiddleware));
 
 app.Run();

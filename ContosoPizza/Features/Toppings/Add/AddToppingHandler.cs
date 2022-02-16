@@ -1,10 +1,11 @@
 ﻿using ContosoPizza.Features.Toppings;
 using ContosoPizza.Models;
 using MediatR;
+using Nudes.Retornator.Core;
 
 namespace ContosoPizza.Features.Toppings.Add
 {
-    public class AddToppingHandler : IRequestHandler<AddToppingRequest, int>
+    public class AddToppingHandler : IRequestHandler<AddToppingRequest, ResultOf<int>>
     {
         private readonly ContosoPizzaContext db;
 
@@ -12,7 +13,7 @@ namespace ContosoPizza.Features.Toppings.Add
         {
             this.db = db;
         }
-        public async Task<int> Handle(AddToppingRequest request, CancellationToken cancellationToken)
+        public async Task<ResultOf<int>> Handle(AddToppingRequest request, CancellationToken cancellationToken)
         {
             Topping topping = new()
             {

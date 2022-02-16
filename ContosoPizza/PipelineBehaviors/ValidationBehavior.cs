@@ -1,32 +1,73 @@
 ﻿using FluentValidation;
 using MediatR;
+using Nudes.Retornator.AspnetCore.Errors;
+using Nudes.Retornator.Core;
+using System.Collections.Generic;
 
-namespace ContosoPizza.PipelineBehaviors
+namespace ContosoPizza.PipelineBehaviors;
+
+public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> 
+    where TResponse : Nudes.Retornator.Core.IResult 
+    where TRequest : IRequest<TResponse>
 {
-    public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-        where TRequest : IRequest<TResponse>
+    private readonly IEnumerable<IValidator<TRequest>> validators;
+
+    public ValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
     {
-        private readonly IEnumerable<IValidator<TRequest>> _validators;
+        this.validators = validators;
+    }
 
-        public ValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
+    public class ValidatorErrorDetail
+    {
+        public string PropertyName { get; set; }
+        public string PropertyValue { get; set; }
+        public string ErrorMessage { get; set; }
+    }
+
+    public class ValidatorErroDetailPropertyNameEqualityComparer : IEqualityComparer<ValidatorErrorDetail>
+    {
+        public bool Equals(ValidatorErrorDetail x, ValidatorErrorDetail y)
         {
-            _validators = validators;
+            if (y is null || x is null) return false;
+
+            return x.PropertyName.Equals(y.PropertyName);
         }
 
-        public Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
-        {
-            //var context = new ValidationContext(request);
-            var failures = _validators
-                .Select(x => x.Validate(request))
-                .SelectMany(x => x.Errors)
-                .ToList();
+        public int GetHashCode(ValidatorErrorDetail obj) => obj.PropertyName.GetHashCode();
+    }
 
-            if (failures.Any())
+    public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+    {
+        var failedValidations = validators
+                                    .Select(v => v.Validate(request))
+                                    .Where(v => !v.IsValid)
+                                    .ToList();
+
+        if (failedValidations.Any())
+        {
+            var fieldErrors = new FieldErrors();
+            var errors = failedValidations
+                .SelectMany(f => f
+                    .Errors
+                    .Select(e => new ValidatorErrorDetail()
+                    {
+                        PropertyName = e.PropertyName,
+                        ErrorMessage = e.ErrorMessage,
+                        PropertyValue = e.FormattedMessagePlaceholderValues?["PropertyValue"]?.ToString() ?? "",
+                    }))
+                .GroupBy(d => d.PropertyName);
+            foreach (var error in errors)
+                fieldErrors.AddErrors(error.Key, error.Select(d => d.ErrorMessage).ToArray());
+
+            var result = System.Activator.CreateInstance<TResponse>();
+            result.Error = new BadRequestError()
             {
-                throw new ValidationException(failures);
-            }
+                FieldErrors = fieldErrors
+            };
 
-            return next();
+            return result;
         }
+
+        return await next();
     }
 }

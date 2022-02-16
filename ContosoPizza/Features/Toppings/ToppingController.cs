@@ -7,6 +7,7 @@ using ContosoPizza.Features.Toppings.Update;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Nudes.Paginator.Core;
+using Nudes.Retornator.Core;
 
 namespace ContosoPizza.Controllers
 {
@@ -24,39 +25,25 @@ namespace ContosoPizza.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<PageResult<ToppingDTO>>> GetAll([FromQuery] GetAllToppingRequest getAllToppingRequest, CancellationToken cancellationToken)
+        public Task<ResultOf<PageResult<ToppingDTO>>> GetAll([FromQuery] GetAllToppingRequest getAllToppingRequest, CancellationToken cancellationToken)
         {
-            var topping = await _mediator.Send(getAllToppingRequest, cancellationToken);
-
-            if (topping.Items.Count == 0)
-            {
-                return NoContent();
-            }
-            return topping;
+            return _mediator.Send(getAllToppingRequest, cancellationToken);
         }
 
         [HttpGet("{Id}")]
-        public async Task<ActionResult<ToppingDTO>> Get([FromRoute] GetToppingRequest getToppingRequest, CancellationToken cancellationToken)
+        public Task<ResultOf<ToppingDTO>> Get([FromRoute] GetToppingRequest getToppingRequest, CancellationToken cancellationToken)
         {
-            var topping = await _mediator.Send(getToppingRequest, cancellationToken);
-
-            if (topping == null)
-            {
-                return NotFound();
-            }
-
-            return topping;
+            return _mediator.Send(getToppingRequest, cancellationToken);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] AddToppingRequest request, CancellationToken cancellationToken)
+        public Task<ResultOf<int>> Create([FromBody] AddToppingRequest request, CancellationToken cancellationToken)
         {
-            var id = await _mediator.Send(request, cancellationToken);
-            return CreatedAtAction(nameof(Get), new { id }, null);
+            return _mediator.Send(request, cancellationToken);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] UpdateToppingRequestDTO toppingDTO, CancellationToken cancellationToken)
+        public Task<Result> Update(int id, [FromBody] UpdateToppingRequestDTO toppingDTO, CancellationToken cancellationToken)
         {
 
             UpdateToppingRequest updateToppingRequest = new()
@@ -65,23 +52,13 @@ namespace ContosoPizza.Controllers
                 Topping = toppingDTO
             };
 
-            if (!await _mediator.Send(updateToppingRequest, cancellationToken))
-            {
-                return NotFound();
-            }
-
-            return NoContent();
+            return _mediator.Send(updateToppingRequest, cancellationToken);
         }
 
         [HttpDelete("{Id}")]
-        public async Task<IActionResult> Delete([FromRoute]DeleteToppingRequest deleteTopingRequest, CancellationToken cancellationToken)
+        public  Task<Result> Delete([FromRoute]DeleteToppingRequest deleteTopingRequest, CancellationToken cancellationToken)
         {
-            if (!await _mediator.Send(deleteTopingRequest, cancellationToken))
-            {
-                return NotFound();
-            }
-
-            return NoContent();
+            return _mediator.Send(deleteTopingRequest, cancellationToken);
         }
 
     }

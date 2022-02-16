@@ -8,6 +8,7 @@ using ContosoPizza.Features.Pizzas.GetAll;
 using ContosoPizza.Features.Pizzas.Update;
 using ContosoPizza.DTOs;
 using Nudes.Paginator.Core;
+using Nudes.Retornator.Core;
 
 namespace ContosoPizza.Controllers
 {
@@ -23,64 +24,40 @@ namespace ContosoPizza.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<PageResult<PizzaDTO>>> GetAll([FromQuery] GetAllPizzaRequest getAllPizzaRequest, CancellationToken cancellationToken)
+        public Task<ResultOf<PageResult<PizzaDTO>>> GetAll([FromQuery] GetAllPizzaRequest getAllPizzaRequest, CancellationToken cancellationToken)
         {
-            var pizzas = await _mediator.Send(getAllPizzaRequest, cancellationToken);
-
-            if (pizzas.Items.Count == 0)
-            {
-                return NoContent();
-            }
-            return pizzas;
+            return _mediator.Send(getAllPizzaRequest, cancellationToken);
         }
 
         [HttpGet("{Id}")]
-        public async Task<ActionResult<PizzaDTO>> Get([FromRoute]GetPizzaRequest getPizzaRequest, CancellationToken cancellationToken)
+        public Task<ResultOf<PizzaDTO>> Get([FromRoute]GetPizzaRequest getPizzaRequest, CancellationToken cancellationToken)
         {
-            var pizza = await _mediator.Send(getPizzaRequest, cancellationToken);
-
-            if (pizza == null)
-            {
-                return NotFound();
-            }
-
-            return pizza;
+            return _mediator.Send(getPizzaRequest, cancellationToken);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] AddPizzaRequest request, CancellationToken cancellationToken)
+        public Task<ResultOf<int>> Create([FromBody] AddPizzaRequest request, CancellationToken cancellationToken)
         {
-            var id = await _mediator.Send(request, cancellationToken);
+            return _mediator.Send(request, cancellationToken);
 
-            return CreatedAtAction(nameof(Get), new { id }, null);
+           
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] UpdatePizzaRequestDTO pizzaDTO, CancellationToken cancellationToken)
+        public Task<Result> Update(int id, [FromBody] UpdatePizzaRequestDTO pizzaDTO, CancellationToken cancellationToken)
         {
             UpdatePizzaRequest updatePizzaRequest = new()
             {
                 Id = id,
                 Pizza = pizzaDTO
             };
-
-            if (!await _mediator.Send(updatePizzaRequest, cancellationToken))
-            {
-                return NotFound();
-            }
-
-            return NoContent();
+            return _mediator.Send(updatePizzaRequest, cancellationToken);
         }
 
         [HttpDelete("{Id}")]
-        public async Task<IActionResult> Delete([FromRoute] DeletePizzaRequest deletePizzaRequest, CancellationToken cancellationToken)
+        public Task<Result> Delete([FromRoute] DeletePizzaRequest deletePizzaRequest, CancellationToken cancellationToken)
         {
-            if (!await _mediator.Send(deletePizzaRequest, cancellationToken))
-            {
-                return NotFound();
-            }
-
-            return NoContent();
+            return  _mediator.Send(deletePizzaRequest, cancellationToken);
         } 
     }
 }
