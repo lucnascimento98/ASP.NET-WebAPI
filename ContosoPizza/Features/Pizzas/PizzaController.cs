@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using ContosoPizza.Models;
 using MediatR;
 using ContosoPizza.Features.Pizzas;
 using ContosoPizza.Features.Pizzas.Get;
 using ContosoPizza.Features.Pizzas.GetAll;
 using ContosoPizza.Features.Pizzas.Update;
 using ContosoPizza.DTOs;
+using Nudes.Paginator.Core;
 
 namespace ContosoPizza.Controllers
 {
@@ -23,11 +23,11 @@ namespace ContosoPizza.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<PizzaDTO>>> GetAll([FromQuery] GetAllPizzaRequest getAllPizzaRequest, CancellationToken cancellationToken)
+        public async Task<ActionResult<PageResult<PizzaDTO>>> GetAll([FromQuery] GetAllPizzaRequest getAllPizzaRequest, CancellationToken cancellationToken)
         {
             var pizzas = await _mediator.Send(getAllPizzaRequest, cancellationToken);
 
-            if (pizzas.Count == 0)
+            if (pizzas.Items.Count == 0)
             {
                 return NoContent();
             }

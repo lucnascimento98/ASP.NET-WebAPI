@@ -4,9 +4,9 @@ using ContosoPizza.Features.Toppings.Delete;
 using ContosoPizza.Features.Toppings.Get;
 using ContosoPizza.Features.Toppings.GetAll;
 using ContosoPizza.Features.Toppings.Update;
-using ContosoPizza.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Nudes.Paginator.Core;
 
 namespace ContosoPizza.Controllers
 {
@@ -24,11 +24,11 @@ namespace ContosoPizza.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<ToppingDTO>>> GetAll([FromQuery] GetAllToppingRequest getAllToppingRequest, CancellationToken cancellationToken)
+        public async Task<ActionResult<PageResult<ToppingDTO>>> GetAll([FromQuery] GetAllToppingRequest getAllToppingRequest, CancellationToken cancellationToken)
         {
             var topping = await _mediator.Send(getAllToppingRequest, cancellationToken);
 
-            if (topping.Count == 0)
+            if (topping.Items.Count == 0)
             {
                 return NoContent();
             }

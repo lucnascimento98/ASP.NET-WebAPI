@@ -1,12 +1,11 @@
 ﻿using ContosoPizza.DTOs;
 using MediatR;
+using Nudes.Paginator.Core;
 
 namespace ContosoPizza.Features.Toppings.GetAll
 {
-    public class GetAllToppingRequest : IRequest<List<ToppingDTO>>
+    public class GetAllToppingRequest :PageRequest,  IRequest<PageResult<ToppingDTO>>
     {
         public string Search { get; set; }
-        public int Page { get; set; } = 1;
-        public int Quantity { get; set; } = 10;
     }
 }
