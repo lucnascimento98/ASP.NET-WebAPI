@@ -1,4 +1,4 @@
-﻿namespace ContosoPizza.models
+﻿namespace ContosoPizza.Models
 {
     public class User
     {
