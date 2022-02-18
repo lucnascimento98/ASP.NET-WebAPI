@@ -31,5 +31,12 @@ namespace ContosoPizza.Models
         {
             
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>()
+                .HasIndex(user => user.Email)
+                .IsUnique();
+        }
     }
 }

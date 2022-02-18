@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ContosoPizza.Migrations
 {
     [DbContext(typeof(ContosoPizzaContext))]
-    [Migration("20220217173744_IncludinUsersAndRolesModels")]
-    partial class IncludinUsersAndRolesModels
+    [Migration("20220218145735_IncludingUserAndRoleModels")]
+    partial class IncludingUserAndRoleModels
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -193,21 +193,22 @@ namespace ContosoPizza.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Username")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique()
+                        .HasFilter("[Email] IS NOT NULL");
 
                     b.HasIndex("RoleId");
 

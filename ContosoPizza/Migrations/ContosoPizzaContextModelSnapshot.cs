@@ -191,21 +191,22 @@ namespace ContosoPizza.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Username")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique()
+                        .HasFilter("[Email] IS NOT NULL");
 
                     b.HasIndex("RoleId");
 

@@ -4,7 +4,7 @@
 
 namespace ContosoPizza.Migrations
 {
-    public partial class IncludinUsersAndRolesModels : Migration
+    public partial class IncludingUserAndRoleModels : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -67,9 +67,8 @@ namespace ContosoPizza.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RoleId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -92,6 +91,13 @@ namespace ContosoPizza.Migrations
                 name: "IX_RoleClaims_RoleId",
                 table: "RoleClaims",
                 column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Email",
+                table: "Users",
+                column: "Email",
+                unique: true,
+                filter: "[Email] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_RoleId",
