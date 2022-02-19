@@ -22,11 +22,6 @@ namespace ContosoPizza.Models
 
         public DbSet<RoleClaim> RoleClaims { get; set; }
 
-        public ContosoPizzaContext()
-        {
-
-        }
-
         public ContosoPizzaContext(DbContextOptions options): base(options)
         {
             

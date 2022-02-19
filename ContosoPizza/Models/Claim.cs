@@ -5,6 +5,6 @@
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public virtual List<RoleClaim> RolaClaims { get; set; }
+        public virtual List<RoleClaim> RoleClaims { get; set; }
     }
 }
