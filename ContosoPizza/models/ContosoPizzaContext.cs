@@ -14,14 +14,24 @@ namespace ContosoPizza.Models
 
         public DbSet<ItemTopping> ItemsToppings { get; set; }
 
-        public ContosoPizzaContext()
-        {
+        public DbSet<User> Users { get; set; }
 
-        }
+        public DbSet<Claim> Claims { get; set; }
+
+        public DbSet<Role> Roles { get; set; }
+
+        public DbSet<RoleClaim> RoleClaims { get; set; }
 
         public ContosoPizzaContext(DbContextOptions options): base(options)
         {
             
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>()
+                .HasIndex(user => user.Email)
+                .IsUnique();
         }
     }
 }
