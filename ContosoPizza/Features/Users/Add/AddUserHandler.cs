@@ -20,7 +20,7 @@ namespace ContosoPizza.Features.Users.Add
             {
                 return new BadRequestError();
             }
-
+            
             User user = new()
             {
                 Name = request.Name,

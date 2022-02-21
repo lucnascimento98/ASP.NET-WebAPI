@@ -17,7 +17,7 @@ namespace ContosoPizza.Features.Roles.GetAll
         }
         public async Task<ResultOf<PageResult<RoleDTO>>> Handle(GetAllRoleRequest request, CancellationToken cancellationToken)
         {
-            var roles = db.Roles.Select(roles => roles);
+            var roles = db.Roles.AsQueryable();
 
             if (!String.IsNullOrWhiteSpace(request.Search))
             {

@@ -35,9 +35,9 @@ namespace ContosoPizza.Features.Users
         }
 
         [HttpPost]
-        public Task<ResultOf<int>> Create([FromBody] AddUserRequest request, CancellationToken cancellationToken)
+        public Task<ResultOf<int>> Create([FromBody] AddUserRequest addUserRequest, CancellationToken cancellationToken)
         {
-            return _mediator.Send(request, cancellationToken);
+            return _mediator.Send(addUserRequest, cancellationToken);
 
         }
 

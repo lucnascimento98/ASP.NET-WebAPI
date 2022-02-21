@@ -17,7 +17,7 @@ namespace ContosoPizza.Features.Toppings.GetAll
         }
         public async Task<ResultOf<PageResult<ToppingDTO>>> Handle(GetAllToppingRequest request, CancellationToken cancellationToken)
         {
-            var toppings = db.Toppings.Select(topping => topping);
+            var toppings = db.Toppings.AsQueryable();
 
             if (!String.IsNullOrWhiteSpace(request.Search))
             {

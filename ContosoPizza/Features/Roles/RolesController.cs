@@ -35,9 +35,9 @@ namespace ContosoPizza.Features.Roles
         }
 
         [HttpPost]
-        public Task<ResultOf<int>> Create([FromBody] AddRoleRequest request, CancellationToken cancellationToken)
+        public Task<ResultOf<int>> Create([FromBody] AddRoleRequest addRoleRequest, CancellationToken cancellationToken)
         {
-            return _mediator.Send(request, cancellationToken);
+            return _mediator.Send(addRoleRequest, cancellationToken);
 
         }
 

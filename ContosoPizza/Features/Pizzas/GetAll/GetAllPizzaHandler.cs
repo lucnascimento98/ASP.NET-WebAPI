@@ -17,7 +17,7 @@ namespace ContosoPizza.Features.Pizzas.GetAll
         }
         public async Task<ResultOf<PageResult<PizzaDTO>>> Handle(GetAllPizzaRequest request, CancellationToken cancellationToken)
         {
-            var pizzas = db.Pizzas.Select(pizza => pizza);
+            var pizzas = db.Pizzas.AsQueryable();
 
             if (!String.IsNullOrWhiteSpace(request.Search))
             {
