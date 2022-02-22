@@ -1,10 +1,12 @@
 ﻿using ContosoPizza.DTOs;
 using ContosoPizza.Features.Users.Add;
+using ContosoPizza.Features.Users.ChangePasswod;
 using ContosoPizza.Features.Users.Delete;
 using ContosoPizza.Features.Users.Get;
 using ContosoPizza.Features.Users.GetAll;
 using ContosoPizza.Features.Users.Update;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nudes.Paginator.Core;
 using Nudes.Retornator.Core;
@@ -56,6 +58,17 @@ namespace ContosoPizza.Features.Users
         public Task<Result> Delete([FromRoute] DeleteUserRequest deleteUserRequest, CancellationToken cancellationToken)
         {
             return _mediator.Send(deleteUserRequest, cancellationToken);
+        }
+
+        [HttpPatch("{id}")]
+        public Task<Result> ChangePassword(int id, [FromBody] ChangePasswordRequestDTO changePasswordRequestDTO, CancellationToken cancellationToken)
+        {
+            ChangePasswordRequest changePasswordRequest = new()
+            {
+                Id = id,
+                ChangePasswordRequestDTO = changePasswordRequestDTO
+            };
+            return _mediator.Send(changePasswordRequest, cancellationToken);
         }
     }
 }
