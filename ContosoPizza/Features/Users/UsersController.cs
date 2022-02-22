@@ -36,6 +36,8 @@ namespace ContosoPizza.Features.Users
             return _mediator.Send(getUserRequest, cancellationToken);
         }
 
+        [Authorize]
+        [AllowAnonymous]
         [HttpPost]
         public Task<ResultOf<int>> Create([FromBody] AddUserRequest addUserRequest, CancellationToken cancellationToken)
         {

@@ -25,12 +25,13 @@ builder.Services.AddDbContext<ContosoPizzaContext>((sp, options) => options.UseS
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMediatR(Assembly.GetEntryAssembly());
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 builder.Services.AddValidatorsFromAssembly(Assembly.GetEntryAssembly());
-builder.Services.AddSingleton(typeof(TokenService));
+builder.Services.AddSingleton<TokenService>();
 
-var key = Encoding.ASCII.GetBytes(builder.Configuration.GetSection("Authentication").GetValue(typeof(string), "SecretString").ToString());
+var key = Encoding.ASCII.GetBytes(builder.Configuration.GetSection("Authentication").GetValue<string>("JWTKey").ToString());
 builder.Services.AddAuthentication(x =>
 {
     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

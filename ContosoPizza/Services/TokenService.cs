@@ -18,7 +18,7 @@ namespace ContosoPizza.Services
         public string GenerateToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_configuration.GetSection("Authentication").GetValue(typeof(string), "SecretString").ToString());
+            var key = Encoding.ASCII.GetBytes(_configuration.GetSection("Authentication").GetValue<string>("JWTKey").ToString());
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new System.Security.Claims.Claim[]
