@@ -22,7 +22,6 @@ namespace ContosoPizza.Features.Users.Update
 
             user.Name = request.User.Name;
             user.Email = request.User.Email;
-            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.User.Password);
 
             await db.SaveChangesAsync(cancellationToken);
 

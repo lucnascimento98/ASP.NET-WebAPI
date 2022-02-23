@@ -62,14 +62,9 @@ namespace ContosoPizza.Features.Users
             return _mediator.Send(deleteUserRequest, cancellationToken);
         }
 
-        [HttpPatch("{id}")]
-        public Task<Result> ChangePassword(int id, [FromBody] ChangePasswordRequestDTO changePasswordRequestDTO, CancellationToken cancellationToken)
+        [HttpPatch]
+        public Task<Result> ChangePassword([FromBody] ChangePasswordRequest changePasswordRequest, CancellationToken cancellationToken)
         {
-            ChangePasswordRequest changePasswordRequest = new()
-            {
-                Id = id,
-                ChangePasswordRequestDTO = changePasswordRequestDTO
-            };
             return _mediator.Send(changePasswordRequest, cancellationToken);
         }
     }

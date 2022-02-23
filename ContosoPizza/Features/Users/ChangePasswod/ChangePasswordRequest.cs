@@ -6,8 +6,7 @@ namespace ContosoPizza.Features.Users.ChangePasswod
 {
     public class ChangePasswordRequest : IRequest<Result>
     {
-        public int Id { get; set; }
-
-        public ChangePasswordRequestDTO ChangePasswordRequestDTO { get; set; }
+        public string OldPassword { get; set; }
+        public string NewPassword { get; set; }
     }
 }
