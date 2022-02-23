@@ -20,21 +20,18 @@ namespace ContosoPizza.Features.Users.Add
 
         public async Task<ResultOf<int>> Handle(AddUserRequest request, CancellationToken cancellationToken)
         {
-            var UserContext = httpContextAccessor.HttpContext.User;
-            var roleId = UserContext.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Role);
+            var userContext = httpContextAccessor.HttpContext.User;
+            var roleId = userContext.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Role);
 
             if (!await db.Roles.AnyAsync(role => role.Id == request.RoleId, cancellationToken)) //se o role da request nao existe
             {
-                return new BadRequestError();
+                return new NotFoundError().AddFieldErrors(nameof(request.RoleId), "NotFound");
             }
-            var idCliente = (await db.Roles.FirstOrDefaultAsync(d => d.Name == "cliente", cancellationToken)).Id;
+            var funcionarioId = (await db.Roles.FirstOrDefaultAsync(d => d.Name == "funcionario", cancellationToken)).Id;
 
-            if (roleId == null || roleId.Value == idCliente.ToString()) //se o usuaro for anonimo ou um cliente
-            {
-                if (request.RoleId != idCliente) //se a role da request nao for cliente 
-                    return new UnauthorizedError();
-            }
-            
+            if (roleId.Value != funcionarioId.ToString() && request.RoleId == funcionarioId) //se o usuaro nao for um funcionario e estiver tentando adicionar um funcionario
+                return new ForbiddenError();
+
             User user = new()
             {
                 Name = request.Name,
