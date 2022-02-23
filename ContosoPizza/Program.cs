@@ -17,7 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddDbContext<ContosoPizzaContext>(d => d.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=ContosoPizza;"));
 
 // Add services to the container.
-
+builder.Configuration.AddJsonFile("appsettings.local.json", true, true);
 builder.Services.AddControllers().AddRetornator();
 builder.Services.AddErrorTranslator(ErrorHttpTranslatorBuilder.Default);
 builder.Services.AddDbContext<ContosoPizzaContext>((sp, options) => options.UseSqlServer(sp.GetRequiredService<IConfiguration>().GetConnectionString("Default")));
