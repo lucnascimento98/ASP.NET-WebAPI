@@ -37,9 +37,9 @@ namespace ContosoPizza.Controllers
         }
 
         [HttpPost]
-        public Task<ResultOf<int>> Create([FromBody] AddToppingRequest request, CancellationToken cancellationToken)
+        public Task<ResultOf<int>> Create([FromBody] AddToppingRequest addToppingRequest, CancellationToken cancellationToken)
         {
-            return _mediator.Send(request, cancellationToken);
+            return _mediator.Send(addToppingRequest, cancellationToken);
         }
 
         [HttpPut("{id}")]

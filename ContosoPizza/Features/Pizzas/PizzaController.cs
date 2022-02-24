@@ -36,9 +36,9 @@ namespace ContosoPizza.Controllers
         }
 
         [HttpPost]
-        public Task<ResultOf<int>> Create([FromBody] AddPizzaRequest request, CancellationToken cancellationToken)
+        public Task<ResultOf<int>> Create([FromBody] AddPizzaRequest addPizzaRequest, CancellationToken cancellationToken)
         {
-            return _mediator.Send(request, cancellationToken);
+            return _mediator.Send(addPizzaRequest, cancellationToken);
 
            
         }
