@@ -8,6 +8,9 @@ namespace ContosoPizza.Features.Users.ChangePasswod
         {
             RuleFor(p => p.NewPassword)
                 .NotEmpty();
+
+            RuleFor(p => p.OldPassword)
+                .NotEmpty();
         }
     }
 }

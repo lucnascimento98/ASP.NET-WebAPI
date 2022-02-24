@@ -11,8 +11,7 @@ namespace ContosoPizza.Features.Users.Update
 
             RuleFor(p => p.User.Email)
                 .EmailAddress()
-                .NotEmpty()
-                .WithMessage("Email not valid.");
+                .NotEmpty();
         }
     }
 }

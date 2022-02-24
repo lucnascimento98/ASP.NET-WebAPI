@@ -8,17 +8,17 @@ namespace ContosoPizza.Features.Authentication
 {
     [ApiController]
     [Route("[controller]")]
-    public class AuthentictionController : ControllerBase
+    public class AuthenticationController : ControllerBase
     {
         private readonly IMediator _mediator;
 
 
-        public AuthentictionController(IMediator mediator)
+        public AuthenticationController(IMediator mediator)
         {
             _mediator = mediator;
         }
         [HttpPost]
-        public Task<ResultOf<AuthenticationResult>> Create([FromBody] LoginRequest loginRequest, CancellationToken cancellationToken)
+        public Task<ResultOf<AuthenticationResult>> Login([FromBody] LoginRequest loginRequest, CancellationToken cancellationToken)
         {
             return _mediator.Send(loginRequest, cancellationToken);
         }
