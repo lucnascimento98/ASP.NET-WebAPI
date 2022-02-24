@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using ContosoPizza.Services;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +32,12 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 builder.Services.AddValidatorsFromAssembly(Assembly.GetEntryAssembly());
 builder.Services.AddSingleton<TokenService>();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Client", policy => policy.RequireAuthenticatedUser().RequireRole("cliente"));
+    options.AddPolicy("Admin", policy => policy.RequireAuthenticatedUser().RequireRole("funcionario"));
+});
 
 var key = Encoding.ASCII.GetBytes(builder.Configuration.GetSection("Authentication").GetValue<string>("JWTKey").ToString());
 builder.Services.AddAuthentication(x =>
