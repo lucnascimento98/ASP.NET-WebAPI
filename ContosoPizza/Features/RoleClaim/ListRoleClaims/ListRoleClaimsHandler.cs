@@ -19,7 +19,7 @@ namespace ContosoPizza.Features.RoleClaim.ListRoleClaims
 
         public async Task<ResultOf<List<string>>> Handle(ListRoleClaimsRequest request, CancellationToken cancellationToken)
         {
-            var role = await db.Roles.Include(d => d.RoleClaims).FirstOrDefaultAsync(r => r.Id == request.Id, cancellationToken);
+            var role = await db.Roles.Include(d => d.RoleClaims).FirstOrDefaultAsync(r => r.Id == request.RoleId, cancellationToken);
             return role == null
                 ? new NotFoundError()
                 : role.RoleClaims.Select(p => p.Claim.ToString()).ToList();
