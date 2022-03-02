@@ -44,7 +44,7 @@ namespace ContosoPizza.Migrations
 
                     b.HasIndex("PizzaId");
 
-                    b.ToTable("Items");
+                    b.ToTable("Items", (string)null);
                 });
 
             modelBuilder.Entity("ContosoPizza.Models.ItemTopping", b =>
@@ -67,7 +67,7 @@ namespace ContosoPizza.Migrations
 
                     b.HasIndex("ToppingId");
 
-                    b.ToTable("ItemsToppings");
+                    b.ToTable("ItemsToppings", (string)null);
                 });
 
             modelBuilder.Entity("ContosoPizza.Models.Order", b =>
@@ -83,7 +83,7 @@ namespace ContosoPizza.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("ContosoPizza.Models.Pizza", b =>
@@ -105,7 +105,7 @@ namespace ContosoPizza.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Pizzas");
+                    b.ToTable("Pizzas", (string)null);
                 });
 
             modelBuilder.Entity("ContosoPizza.Models.Role", b =>
@@ -121,7 +121,7 @@ namespace ContosoPizza.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("ContosoPizza.Models.RoleClaim", b =>
@@ -142,7 +142,7 @@ namespace ContosoPizza.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("RoleClaims");
+                    b.ToTable("RoleClaims", (string)null);
                 });
 
             modelBuilder.Entity("ContosoPizza.Models.Topping", b =>
@@ -161,7 +161,7 @@ namespace ContosoPizza.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Toppings");
+                    b.ToTable("Toppings", (string)null);
                 });
 
             modelBuilder.Entity("ContosoPizza.Models.User", b =>
@@ -192,7 +192,7 @@ namespace ContosoPizza.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("ContosoPizza.Models.Item", b =>
