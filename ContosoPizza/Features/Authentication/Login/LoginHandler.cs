@@ -29,9 +29,11 @@ namespace ContosoPizza.Features.Authentication.Login
             if(!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
                 return new UnauthorizedError();
 
+            var userClaims = await db.RoleClaims.Where(p => p.RoleId == user.RoleId).Select(p => p.Claim).ToListAsync(cancellationToken);
+            
             return new AuthenticationResult()
             {
-                AccessToken = tokenService.GenerateToken(user),
+                AccessToken = tokenService.GenerateToken(user, userClaims),
             };
         }
     }
