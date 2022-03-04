@@ -31,6 +31,7 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBeh
 builder.Services.AddValidatorsFromAssembly(Assembly.GetEntryAssembly());
 builder.Services.AddSingleton<TokenService>();
 
+
 var key = Encoding.ASCII.GetBytes(builder.Configuration.GetSection("Authentication").GetValue<string>("JWTKey").ToString());
 builder.Services.AddAuthentication(x =>
 {

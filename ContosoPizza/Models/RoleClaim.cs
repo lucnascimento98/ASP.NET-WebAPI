@@ -1,4 +1,6 @@
-﻿namespace ContosoPizza.Models
+﻿using ContosoPizza.Models.Enums;
+
+namespace ContosoPizza.Models
 {
     public class RoleClaim
     {
@@ -7,7 +9,6 @@
         public int RoleId { get; set; }
         public virtual Role Role { get; set; }
 
-        public int ClaimId { get; set; }
-        public virtual Claim Claim { get; set; } 
+        public Claims Claim { get; set; }
     }
 }

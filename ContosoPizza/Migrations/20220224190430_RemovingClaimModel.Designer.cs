@@ -3,6 +3,7 @@ using ContosoPizza.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ContosoPizza.Migrations
 {
     [DbContext(typeof(ContosoPizzaContext))]
-    partial class ContosoPizzaContextModelSnapshot : ModelSnapshot
+    [Migration("20220224190430_RemovingClaimModel")]
+    partial class RemovingClaimModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,7 +46,7 @@ namespace ContosoPizza.Migrations
 
                     b.HasIndex("PizzaId");
 
-                    b.ToTable("Items", (string)null);
+                    b.ToTable("Items");
                 });
 
             modelBuilder.Entity("ContosoPizza.Models.ItemTopping", b =>
@@ -67,7 +69,7 @@ namespace ContosoPizza.Migrations
 
                     b.HasIndex("ToppingId");
 
-                    b.ToTable("ItemsToppings", (string)null);
+                    b.ToTable("ItemsToppings");
                 });
 
             modelBuilder.Entity("ContosoPizza.Models.Order", b =>
@@ -83,7 +85,7 @@ namespace ContosoPizza.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("ContosoPizza.Models.Pizza", b =>
@@ -105,7 +107,7 @@ namespace ContosoPizza.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Pizzas", (string)null);
+                    b.ToTable("Pizzas");
                 });
 
             modelBuilder.Entity("ContosoPizza.Models.Role", b =>
@@ -121,7 +123,7 @@ namespace ContosoPizza.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("ContosoPizza.Models.RoleClaim", b =>
@@ -142,7 +144,7 @@ namespace ContosoPizza.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("RoleClaims", (string)null);
+                    b.ToTable("RoleClaims");
                 });
 
             modelBuilder.Entity("ContosoPizza.Models.Topping", b =>
@@ -161,7 +163,7 @@ namespace ContosoPizza.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Toppings", (string)null);
+                    b.ToTable("Toppings");
                 });
 
             modelBuilder.Entity("ContosoPizza.Models.User", b =>
@@ -192,7 +194,7 @@ namespace ContosoPizza.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("ContosoPizza.Models.Item", b =>
