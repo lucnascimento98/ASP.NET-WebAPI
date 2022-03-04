@@ -20,19 +20,19 @@ namespace ContosoPizza.Features.RoleClaim
         }
 
         [HttpGet("{RoleId}")]
-        public Task<ResultOf<List<string>>> ListRoleClaims ([FromRoute] ListRoleClaimsRequest listRoleClaimsRequest, CancellationToken cancellationToken)
+        public Task<ResultOf<List<string>>> ListRoleClaims([FromRoute] ListRoleClaimsRequest listRoleClaimsRequest, CancellationToken cancellationToken)
         {
             return _mediator.Send(listRoleClaimsRequest, cancellationToken);
         }
 
-        [HttpDelete]
-        public Task<Result> RemoveClaimFromRole ([FromQuery] RemoveClaimFromRoleRequest removeClaimFromRoleRequest, CancellationToken cancellationToken)
+        [HttpDelete("{RoleId}/{Claim}")]
+        public Task<Result> RemoveClaimFromRole([FromRoute] RemoveClaimFromRoleRequest removeClaimFromRoleRequest, CancellationToken cancellationToken)
         {
             return _mediator.Send(removeClaimFromRoleRequest, cancellationToken);
         }
 
-        [HttpPost]
-        public Task<ResultOf<int>> AddClaimToRole([FromBody] AddClaimToRoleRequest addClaimToRoleRequest, CancellationToken cancellationToken)
+        [HttpPost("{RoleId}/{Claim}")]
+        public Task<ResultOf<int>> AddClaimToRole([FromRoute] AddClaimToRoleRequest addClaimToRoleRequest, CancellationToken cancellationToken)
         {
             return _mediator.Send(addClaimToRoleRequest, cancellationToken);
         }

@@ -21,7 +21,7 @@ namespace ContosoPizza.Features.Authentication.Login
         }
         public async Task<ResultOf<AuthenticationResult>> Handle(LoginRequest request, CancellationToken cancellationToken)
         {
-            var user = await db.Users.FirstOrDefaultAsync(u => u.Email == request.Email, cancellationToken);
+            var user = await db.Users.Include(d => d.Role).ThenInclude(d => d.RoleClaims).FirstOrDefaultAsync(u => u.Email == request.Email, cancellationToken);
 
             if (user == null)
                 return new UnauthorizedError();
@@ -29,7 +29,7 @@ namespace ContosoPizza.Features.Authentication.Login
             if(!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
                 return new UnauthorizedError();
 
-            var userClaims = await db.RoleClaims.Where(p => p.RoleId == user.RoleId).Select(p => p.Claim).ToListAsync(cancellationToken);
+            var userClaims = user.Role.RoleClaims.Select(d => d.Claim).ToList();
             
             return new AuthenticationResult()
             {

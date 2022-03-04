@@ -21,14 +21,12 @@ namespace ContosoPizza.Features.RoleClaim.RemoveClaimFromRole
                 .FirstOrDefaultAsync(r => r.Id == request.RoleId, cancellationToken);
 
             if (role == null)
-                return new NotFoundError().AddFieldErrors("Role", "NotFound");
+                return new NotFoundError().AddFieldErrors(nameof(request.RoleId), "NotFound");
 
             var claim = role.RoleClaims.FirstOrDefault(d => d.Claim == request.Claim);
 
             if(claim == null)
-                return new NotFoundError().AddFieldErrors("Claim", "NotFound");
-
-            //db.RoleClaims.FirstOrDefaultAsync(d => d.Claim == request.Claim && d.RoleId == request.RoleId, cancellationToken);
+                return new NotFoundError().AddFieldErrors(nameof(request.Claim), "NotFound");
 
             db.RoleClaims.Remove(claim);
 

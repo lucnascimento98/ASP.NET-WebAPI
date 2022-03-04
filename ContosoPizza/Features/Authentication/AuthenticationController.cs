@@ -1,6 +1,7 @@
 ﻿using ContosoPizza.DTOs;
 using ContosoPizza.Features.Authentication.Login;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nudes.Retornator.Core;
 
@@ -17,7 +18,9 @@ namespace ContosoPizza.Features.Authentication
         {
             _mediator = mediator;
         }
+
         [HttpPost]
+        [AllowAnonymous]
         public Task<ResultOf<AuthenticationResult>> Login([FromBody] LoginRequest loginRequest, CancellationToken cancellationToken)
         {
             return _mediator.Send(loginRequest, cancellationToken);
