@@ -17,7 +17,7 @@ namespace ContosoPizza.Features.Users.GetAll
         }
         public async Task<ResultOf<PageResult<UserDTO>>> Handle(GetAllUserRequest request, CancellationToken cancellationToken)
         {
-            var user = db.Users.AsQueryable();
+            var user = db.Users.Include(d => d.Role).AsQueryable();
 
             if (!String.IsNullOrWhiteSpace(request.Search))
             {
@@ -30,7 +30,8 @@ namespace ContosoPizza.Features.Users.GetAll
             {
                 Id = p.Id,
                 Name = p.Name,
-                Email = p.Email                
+                Email = p.Email,
+                Role = p.Role.Name,
             }).PaginateBy(request, p => p.Name).ToListAsync(cancellationToken);
 
 
