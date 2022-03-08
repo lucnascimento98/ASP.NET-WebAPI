@@ -31,6 +31,31 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBeh
 builder.Services.AddValidatorsFromAssembly(Assembly.GetEntryAssembly());
 builder.Services.AddSingleton<TokenService>();
 
+builder.Services.AddAuthorization(options =>
+{
+    
+    options.AddPolicy("AddPizza", policy => policy.RequireClaim("Claim", "AddPizza"));
+    options.AddPolicy("EditPizza", policy => policy.RequireClaim("Claim", "EditPizza"));
+    options.AddPolicy("DeletePizza", policy => policy.RequireClaim("Claim", "DeletePizza"));
+    options.AddPolicy("AddTopping", policy => policy.RequireClaim("Claim", "AddTopping"));
+    options.AddPolicy("EditTopping", policy => policy.RequireClaim("Claim", "EditTopping"));
+    options.AddPolicy("DeleteTopping", policy => policy.RequireClaim("Claim", "DeleteTopping"));
+    options.AddPolicy("AddUserAdmin", policy => policy.RequireClaim("Claim", "AddUserAdmin")); //duvida
+    options.AddPolicy("EditUser", policy => policy.RequireClaim("Claim", "EditUser")); //duvida
+    options.AddPolicy("GetUser", policy => policy.RequireClaim("Claim", "GetUser")); 
+    options.AddPolicy("GetAllUser", policy => policy.RequireClaim("Claim", "GetAllUser"));
+    options.AddPolicy("DeleteUser", policy => policy.RequireClaim("Claim", "DeleteUser")); //duvida
+    options.AddPolicy("ChangePassword", policy => policy.RequireClaim("Claim", "ChangePassword")); 
+    options.AddPolicy("AddRole", policy => policy.RequireClaim("Claim", "AddRole")); 
+    options.AddPolicy("EditRole", policy => policy.RequireClaim("Claim", "EditRole"));
+    options.AddPolicy("GetRole", policy => policy.RequireClaim("Claim", "GetRole"));
+    options.AddPolicy("GetAllRole", policy => policy.RequireClaim("Claim", "GetAllRole"));
+    options.AddPolicy("DeleteRole", policy => policy.RequireClaim("Claim", "DeleteRole"));
+    options.AddPolicy("AddClaimToRole", policy => policy.RequireClaim("Claim", "AddClaimToRole"));
+    options.AddPolicy("RemoveClaimFromRole", policy => policy.RequireClaim("Claim", "RemoveClaimFromRole"));
+    options.AddPolicy("ListRoleClaims", policy => policy.RequireClaim("Claim", "ListRoleClaims"));
+});
+
 
 var key = Encoding.ASCII.GetBytes(builder.Configuration.GetSection("Authentication").GetValue<string>("JWTKey").ToString());
 builder.Services.AddAuthentication(x =>

@@ -1,10 +1,6 @@
-﻿using ContosoPizza.DTOs;
-using MediatR;
-using Nudes.Retornator.Core;
-
-namespace ContosoPizza.Features.Users.Add
+﻿namespace ContosoPizza.DTOs
 {
-    public class AddUserRequest : IRequest<ResultOf<int>>
+    public class AddAdminRequestDTO
     {
         public string Name { get; set; }
         public string Email { get; set; }

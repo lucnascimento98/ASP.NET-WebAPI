@@ -24,27 +24,49 @@ namespace ContosoPizza.Features.Users
             _mediator = mediator;
         }
 
+        [Authorize(Policy = "GetAllUser")]
         [HttpGet]
         public Task<ResultOf<PageResult<UserDTO>>> GetAll([FromQuery] GetAllUserRequest getAllUserRequest, CancellationToken cancellationToken)
         {
             return _mediator.Send(getAllUserRequest, cancellationToken);
         }
 
+        [Authorize(Policy = "GetUser")]
         [HttpGet("{Id}")]
         public Task<ResultOf<UserDTO>> Get([FromRoute] GetUserRequest getUserRequest, CancellationToken cancellationToken)
         {
             return _mediator.Send(getUserRequest, cancellationToken);
         }
 
-        [Authorize]
         [AllowAnonymous]
-        [HttpPost]
-        public Task<ResultOf<int>> Create([FromBody] AddUserRequest addUserRequest, CancellationToken cancellationToken)
+        [HttpPost("Client")]
+        public Task<ResultOf<int>> CreateClient([FromBody] AddClientRequestDTO addClientRequestDTO, CancellationToken cancellationToken)
         {
+            AddUserRequest addUserRequest = new()
+            {
+                Name = addClientRequestDTO.Name,
+                Email = addClientRequestDTO.Email,
+                Password = addClientRequestDTO.Password,
+                RoleId = 2
+            };
             return _mediator.Send(addUserRequest, cancellationToken);
-
         }
 
+        [Authorize(Policy = "AddUserAdmin")]
+        [HttpPost("Admin")]
+        public Task<ResultOf<int>> CreateAdmin([FromBody] AddAdminRequestDTO addAdminRequestDTO, CancellationToken cancellationToken)
+        {
+            AddUserRequest addUserRequest = new()
+            {
+                Name = addAdminRequestDTO.Name,
+                Email = addAdminRequestDTO.Email,
+                Password = addAdminRequestDTO.Password,
+                RoleId = addAdminRequestDTO.RoleId
+            };
+            return _mediator.Send(addUserRequest, cancellationToken);
+        }
+
+        [Authorize]
         [HttpPut("{id}")]
         public Task<Result> Update(int id, [FromBody] UpdateUserRequestDTO UserDTO, CancellationToken cancellationToken)
         {
@@ -56,12 +78,14 @@ namespace ContosoPizza.Features.Users
             return _mediator.Send(updateUserRequest, cancellationToken);
         }
 
+        [Authorize]
         [HttpDelete("{Id}")]
         public Task<Result> Delete([FromRoute] DeleteUserRequest deleteUserRequest, CancellationToken cancellationToken)
         {
             return _mediator.Send(deleteUserRequest, cancellationToken);
         }
 
+        [Authorize]
         [HttpPatch]
         public Task<Result> ChangePassword([FromBody] ChangePasswordRequest changePasswordRequest, CancellationToken cancellationToken)
         {
