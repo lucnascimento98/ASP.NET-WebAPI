@@ -1,5 +1,6 @@
 ﻿using ContosoPizza.DTOs;
 using ContosoPizza.Models;
+using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Nudes.Paginator.Core;
@@ -26,18 +27,9 @@ namespace ContosoPizza.Features.Toppings.GetAll
 
             var total = await toppings.CountAsync(cancellationToken);
 
-            List<ToppingDTO> list = await toppings.Select(t => new ToppingDTO()
-            {
-                Id = t.Id,
-                Name = t.Name,
-                Value = t.Value
-            }).PaginateBy(request, p => p.Name).ToListAsync(cancellationToken);
+            var list = await toppings.ProjectToType<ToppingDTO>().PaginateBy(request, p => p.Name).ToListAsync(cancellationToken);
 
-
-            return new PageResult<ToppingDTO>(request, total, list);
-
-            
-            
+            return new PageResult<ToppingDTO>(request, total, list);           
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ContosoPizza.Models;
+using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Nudes.Retornator.AspnetCore.Errors;
@@ -20,9 +21,7 @@ namespace ContosoPizza.Features.Pizzas.Update
             if (pizza is null)
                 return  new NotFoundError();
 
-            pizza.Name = request.Pizza.Name;
-            pizza.IsGlutenFree = request.Pizza.IsGlutenFree;
-            pizza.Value = request.Pizza.Value;
+            request.Pizza.Adapt(pizza);
 
             await db.SaveChangesAsync(cancellationToken);
 

@@ -1,5 +1,6 @@
 ﻿using ContosoPizza.DTOs;
 using ContosoPizza.Models;
+using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Nudes.Retornator.AspnetCore.Errors;
@@ -21,12 +22,7 @@ namespace ContosoPizza.Features.Toppings.Get
             if (topping == null) 
                 return new NotFoundError();
 
-            return new ToppingDTO()
-            {
-                Id = topping.Id,
-                Name = topping.Name,
-                Value = topping.Value
-            };
+            return topping.Adapt<ToppingDTO>();
         }
     }
 }
