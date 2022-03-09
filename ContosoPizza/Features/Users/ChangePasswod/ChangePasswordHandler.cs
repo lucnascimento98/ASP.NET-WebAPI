@@ -20,9 +20,9 @@ namespace ContosoPizza.Features.Users.ChangePasswod
 
         public async Task<Result> Handle(ChangePasswordRequest request, CancellationToken cancellationToken)
         {
-            var userEmail = httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Email).Value;
+            var userId = httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
 
-            var user = await db.Users.FirstOrDefaultAsync(user => user.Email == userEmail, cancellationToken);
+            var user = await db.Users.FirstOrDefaultAsync(user => user.Id.ToString() == userId, cancellationToken);
 
             if (!BCrypt.Net.BCrypt.Verify(request.OldPassword, user.PasswordHash))
                 return new BadRequestError();

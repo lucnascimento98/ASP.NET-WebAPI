@@ -54,7 +54,7 @@ namespace ContosoPizza.Features.Users
 
         [Authorize(Policy = "AddUserAdmin")]
         [HttpPost("Admin")]
-        public Task<ResultOf<int>> CreateAdmin([FromBody] AddAdminRequestDTO addAdminRequestDTO, CancellationToken cancellationToken)
+        public Task<ResultOf<int>> CreateAdmin([FromBody] AddEmployeeRequestDTO addAdminRequestDTO, CancellationToken cancellationToken)
         {
             AddUserRequest addUserRequest = new()
             {

@@ -26,14 +26,6 @@ namespace ContosoPizza.Features.Users.Add
                 return new NotFoundError().AddFieldErrors(nameof(request.RoleId), "NotFound");
             }
 
-            //var userContext = httpContextAccessor.HttpContext.User;
-            //var roleId = userContext.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Role);
-
-            //var funcionarioId = (await db.Roles.FirstOrDefaultAsync(d => d.Name == "Funcionario", cancellationToken)).Id;
-
-            //if (roleId.Value != funcionarioId.ToString() && request.RoleId == funcionarioId) //se o usuaro nao for um funcionario e estiver tentando adicionar um funcionario
-            //    return new ForbiddenError();
-
             User user = new()
             {
                 Name = request.Name,

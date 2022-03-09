@@ -1,6 +1,6 @@
 ﻿namespace ContosoPizza.DTOs
 {
-    public class AddAdminRequestDTO
+    public class AddEmployeeRequestDTO
     {
         public string Name { get; set; }
         public string Email { get; set; }

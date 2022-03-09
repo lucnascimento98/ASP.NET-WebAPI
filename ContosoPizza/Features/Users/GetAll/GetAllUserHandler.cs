@@ -21,7 +21,12 @@ namespace ContosoPizza.Features.Users.GetAll
 
             if (!String.IsNullOrWhiteSpace(request.Search))
             {
-                user = user.Where(pizza => pizza.Name.Contains(request.Search));
+                user = user.Where(u => u.Name.Contains(request.Search));
+            }
+
+            if (request.RoleId != null)
+            {
+                user = user.Where(u => u.RoleId == request.RoleId);
             }
 
             var total = await user.CountAsync(cancellationToken);
