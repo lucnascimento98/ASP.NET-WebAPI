@@ -20,24 +20,18 @@ namespace ContosoPizza.Features.Users.Add
 
         public async Task<ResultOf<int>> Handle(AddUserRequest request, CancellationToken cancellationToken)
         {
-            var userContext = httpContextAccessor.HttpContext.User;
-            var roleId = userContext.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Role);
 
             if (!await db.Roles.AnyAsync(role => role.Id == request.RoleId, cancellationToken)) //se o role da request nao existe
             {
                 return new NotFoundError().AddFieldErrors(nameof(request.RoleId), "NotFound");
             }
-            var funcionarioId = (await db.Roles.FirstOrDefaultAsync(d => d.Name == "funcionario", cancellationToken)).Id;
-
-            if (roleId.Value != funcionarioId.ToString() && request.RoleId == funcionarioId) //se o usuaro nao for um funcionario e estiver tentando adicionar um funcionario
-                return new ForbiddenError();
 
             User user = new()
             {
                 Name = request.Name,
                 Email = request.Email,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
-                RoleId = request.RoleId.Value,
+                RoleId = request.RoleId,
             };
 
             db.Users.Add(user);

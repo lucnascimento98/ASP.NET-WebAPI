@@ -4,27 +4,27 @@
     {
         AddPizza = 0,
         EditPizza = 1,
-        GetPizza = 2,
-        GetAllPizza = 3,
         DeletePizza = 4,
         AddTopping = 5,
         EditTopping = 6,
-        GetTopping = 7,
-        GetAllTopping = 8,
         DeleteTopping = 9,
-        AddUser = 10,
-        EditUser = 11,
+        AddUserAdmin = 10,
+        EditAllUser = 11,
         GetUser = 12,
         GetAllUser = 13,
-        DeleteUser = 14,
+        DeleteAllUser = 14,
         ChangePassword = 15,
-        AddRoleClaim = 16,
-        EditRoleClaim = 17,
-        GetRoleClaim = 18,
-        GetAllRoleClaim = 19,
-        DeleteRoleClaim = 20,
+        AddRole = 16,
+        EditRole = 17,
+        GetRole = 18,
+        GetAllRole = 19,
+        DeleteRole = 20,
         AddClaimToRole = 21,
         RemoveClaimFromRole = 22,
         ListRoleClaims = 23,
     }
 }
+
+/*
+ * admin = 0, 1, 4, 5, 6, 9, 11, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23
+ */

@@ -17,7 +17,7 @@ namespace ContosoPizza.Features.Users.Get
         }
         public async Task<ResultOf<UserDTO>> Handle(GetUserRequest request, CancellationToken cancellationToken)
         {
-            var user = await db.Users.FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
+            var user = await db.Users.Include(p => p.Role).FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
             if (user == null)
                 return new NotFoundError();
 
@@ -26,6 +26,7 @@ namespace ContosoPizza.Features.Users.Get
                 Id = user.Id,
                 Name = user.Name,
                 Email = user.Email,
+                Role = user.Role.Name,
             };
         }
     }

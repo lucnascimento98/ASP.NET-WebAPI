@@ -23,7 +23,7 @@ namespace ContosoPizza.Services
 
             List<Claim> claims = new()
             {
-                new Claim(ClaimTypes.Name, user.Email.ToString()),
+                new Claim(ClaimTypes.Email, user.Email.ToString()),
                 new Claim(ClaimTypes.Role, user.RoleId.ToString()),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             };

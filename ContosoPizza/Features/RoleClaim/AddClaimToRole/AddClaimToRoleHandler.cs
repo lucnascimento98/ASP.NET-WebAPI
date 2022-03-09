@@ -20,10 +20,13 @@ namespace ContosoPizza.Features.RoleClaim.AddClaimToRole
 
         public async Task<ResultOf<int>> Handle(AddClaimToRoleRequest request, CancellationToken cancellationToken)
         {
-            var role = await db.Roles.FirstOrDefaultAsync(p => p.Id == request.RoleId, cancellationToken);
+            var role = await db.Roles.Include(d => d.RoleClaims).FirstOrDefaultAsync(p => p.Id == request.RoleId, cancellationToken);
 
             if (role == null)
                 return new NotFoundError().AddFieldErrors(nameof(request.RoleId), "NotFound");
+
+            if (role.RoleClaims.Any(d => d.Claim == request.Claim))
+                return new BadRequestError().AddFieldErrors(nameof(request.Claim), "This role already has this claim");
 
             var roleClaim = new Models.RoleClaim()
             {

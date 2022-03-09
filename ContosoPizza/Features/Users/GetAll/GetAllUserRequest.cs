@@ -5,8 +5,9 @@ using Nudes.Retornator.Core;
 
 namespace ContosoPizza.Features.Users.GetAll
 {
-    public class GetAllUserRequest :PageRequest, IRequest<ResultOf<PageResult<UserDTO>>>
+    public class GetAllUserRequest : PageRequest, IRequest<ResultOf<PageResult<UserDTO>>>
     {
         public string Search { get; set; }
+        public int? RoleId { get; set; }
     }
 }
