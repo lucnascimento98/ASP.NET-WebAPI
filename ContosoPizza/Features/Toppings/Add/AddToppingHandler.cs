@@ -1,5 +1,6 @@
 ﻿using ContosoPizza.Features.Toppings;
 using ContosoPizza.Models;
+using Mapster;
 using MediatR;
 using Nudes.Retornator.Core;
 
@@ -15,11 +16,7 @@ namespace ContosoPizza.Features.Toppings.Add
         }
         public async Task<ResultOf<int>> Handle(AddToppingRequest request, CancellationToken cancellationToken)
         {
-            Topping topping = new()
-            {
-                Name = request.Name,
-                Value = request.Value,
-            };
+            var topping = request.Adapt<Topping>();
 
             db.Toppings.Add(topping);
 

@@ -1,4 +1,5 @@
 ﻿using ContosoPizza.Models;
+using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Nudes.Retornator.AspnetCore.Errors;
@@ -20,8 +21,7 @@ namespace ContosoPizza.Features.Toppings.Update
             if (topping is null)
                 return new NotFoundError();
 
-            topping.Name = request.Topping.Name;
-            topping.Value = request.Topping.Value;
+            request.Adapt(topping);
 
             await db.SaveChangesAsync(cancellationToken);
 

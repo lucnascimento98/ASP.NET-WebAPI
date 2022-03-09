@@ -1,5 +1,6 @@
 ﻿using ContosoPizza.DTOs;
 using ContosoPizza.Models;
+using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Nudes.Retornator.AspnetCore.Errors;
@@ -21,13 +22,7 @@ namespace ContosoPizza.Features.Pizzas.Get
             if (pizza == null)
                 return new NotFoundError();
 
-            return new PizzaDTO()
-            {
-                Id = pizza.Id,
-                Name = pizza.Name,
-                Value = pizza.Value,
-                IsGlutenFree = pizza.IsGlutenFree
-            };
+            return pizza.Adapt<PizzaDTO>();
         }
     }
 }
