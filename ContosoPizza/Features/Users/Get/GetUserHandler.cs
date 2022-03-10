@@ -1,5 +1,6 @@
 ﻿using ContosoPizza.DTOs;
 using ContosoPizza.Models;
+using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Nudes.Retornator.AspnetCore.Errors;
@@ -21,13 +22,7 @@ namespace ContosoPizza.Features.Users.Get
             if (user == null)
                 return new NotFoundError();
 
-            return new UserDTO()
-            {
-                Id = user.Id,
-                Name = user.Name,
-                Email = user.Email,
-                Role = user.Role.Name,
-            };
+            return user.Adapt<UserDTO>();
         }
     }
 }

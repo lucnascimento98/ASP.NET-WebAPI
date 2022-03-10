@@ -1,4 +1,5 @@
 ﻿using ContosoPizza.Models;
+using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Nudes.Retornator.AspnetCore.Errors;
@@ -20,7 +21,7 @@ namespace ContosoPizza.Features.Roles.Update
             if (role is null)
                 return new NotFoundError();
 
-            role.Name = request.Role.Name;
+            request.Adapt(role);
 
             await db.SaveChangesAsync(cancellationToken);
 

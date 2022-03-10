@@ -1,5 +1,6 @@
 ﻿using ContosoPizza.DTOs;
 using ContosoPizza.Models;
+using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Nudes.Paginator.Core;
@@ -31,14 +32,7 @@ namespace ContosoPizza.Features.Users.GetAll
 
             var total = await user.CountAsync(cancellationToken);
 
-            List<UserDTO> list = await user.Select(p => new UserDTO()
-            {
-                Id = p.Id,
-                Name = p.Name,
-                Email = p.Email,
-                Role = p.Role.Name,
-            }).PaginateBy(request, p => p.Name).ToListAsync(cancellationToken);
-
+            List<UserDTO> list = await user.ProjectToType<UserDTO>().PaginateBy(request, p => p.Name).ToListAsync(cancellationToken);
 
             return new PageResult<UserDTO>(request, total, list);
         }

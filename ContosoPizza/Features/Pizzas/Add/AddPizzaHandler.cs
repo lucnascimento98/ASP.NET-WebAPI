@@ -1,5 +1,5 @@
 ﻿using ContosoPizza.Models;
-
+using Mapster;
 using MediatR;
 using Nudes.Retornator.Core;
 
@@ -23,12 +23,7 @@ class AddPizzaHandler : IRequestHandler<AddPizzaRequest, ResultOf<int>>
     /// </summary>
     public async Task<ResultOf<int>> Handle(AddPizzaRequest request, CancellationToken cancellationToken)
     {
-        Pizza pizza = new()
-        {
-            Name = request.Name,
-            Value = request.Value,
-            IsGlutenFree = request.IsGlutenFree
-        };
+        Pizza pizza = request.Adapt<Pizza>();
 
         db.Pizzas.Add(pizza);
 

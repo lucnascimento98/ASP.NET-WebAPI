@@ -1,5 +1,6 @@
 ﻿using ContosoPizza.DTOs;
 using ContosoPizza.Models;
+using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Nudes.Retornator.AspnetCore.Errors;
@@ -22,12 +23,7 @@ namespace ContosoPizza.Features.Roles.Get
             if (role == null)
                 return new NotFoundError();
 
-            return new RoleDTO()
-            {
-                Id = role.Id,
-                Name = role.Name,
-            };
-
+            return role.Adapt<RoleDTO>();
         }
     }
 }

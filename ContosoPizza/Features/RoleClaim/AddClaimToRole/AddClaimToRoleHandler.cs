@@ -2,6 +2,7 @@
 using ContosoPizza.Models;
 using ContosoPizza.Models.Enums;
 using ContosoPizza.Services;
+using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Nudes.Retornator.AspnetCore.Errors;
@@ -28,11 +29,7 @@ namespace ContosoPizza.Features.RoleClaim.AddClaimToRole
             if (role.RoleClaims.Any(d => d.Claim == request.Claim))
                 return new BadRequestError().AddFieldErrors(nameof(request.Claim), "This role already has this claim");
 
-            var roleClaim = new Models.RoleClaim()
-            {
-                RoleId = request.RoleId,
-                Claim = request.Claim,
-            };
+            var roleClaim = request.Adapt<Models.RoleClaim>();
 
             db.RoleClaims.Add(roleClaim);
 
