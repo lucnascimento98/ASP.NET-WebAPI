@@ -1,4 +1,5 @@
 ﻿using ContosoPizza.Models;
+using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Nudes.Retornator.AspnetCore.Errors;
@@ -26,13 +27,9 @@ namespace ContosoPizza.Features.Users.Add
                 return new NotFoundError().AddFieldErrors(nameof(request.RoleId), "NotFound");
             }
 
-            User user = new()
-            {
-                Name = request.Name,
-                Email = request.Email,
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
-                RoleId = request.RoleId,
-            };
+            var user = request.Adapt<User>();
+
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
 
             db.Users.Add(user);
 

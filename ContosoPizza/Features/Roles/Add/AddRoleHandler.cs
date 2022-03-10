@@ -1,4 +1,5 @@
 ﻿using ContosoPizza.Models;
+using Mapster;
 using MediatR;
 using Nudes.Retornator.AspnetCore.Errors;
 using Nudes.Retornator.Core;
@@ -17,10 +18,7 @@ namespace ContosoPizza.Features.Roles.Add
         public async Task<ResultOf<int>> Handle(AddRoleRequest request, CancellationToken cancellationToken)
         {
 
-            Role role = new()
-            {
-                Name = request.Name,
-            };
+            var role = request.Adapt<Role>();
 
             db.Roles.Add(role);
 

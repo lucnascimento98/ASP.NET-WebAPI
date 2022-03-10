@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using ContosoPizza.Services;
+using Mapster;
+using System.Linq.Expressions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +28,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMediatR(Assembly.GetEntryAssembly());
 builder.Services.AddHttpContextAccessor();
+
+TypeAdapterConfig.GlobalSettings.Scan(Assembly.GetExecutingAssembly());
+
+TypeAdapterConfig.GlobalSettings.Compiler = exp => exp.CompileWithDebugInfo();
+
 
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 builder.Services.AddValidatorsFromAssembly(Assembly.GetEntryAssembly());

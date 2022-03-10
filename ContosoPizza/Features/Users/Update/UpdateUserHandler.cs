@@ -1,5 +1,6 @@
 ﻿using ContosoPizza.Models;
 using ContosoPizza.Models.Enums;
+using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Nudes.Retornator.AspnetCore.Errors;
@@ -33,9 +34,8 @@ namespace ContosoPizza.Features.Users.Update
             var userUpdated = await db.Users.FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
             if (userUpdated is null)
                 return new NotFoundError();
-
-            userUpdated.Name = request.User.Name;
-            userUpdated.Email = request.User.Email;
+            
+            request.Adapt(userUpdated);
 
             await db.SaveChangesAsync(cancellationToken);
 

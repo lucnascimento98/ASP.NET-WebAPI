@@ -12,13 +12,9 @@ namespace ContosoPizza.Models.Adapters
             config.NewConfig<Topping, ToppingDTO>()
                 .TwoWays();
 
-            config.NewConfig<AddToppingRequest, Topping>()
-                .Ignore(x => x.Id)
-                .Ignore(x => x.ItemToppings);
-
             config.NewConfig<UpdateToppingRequest, Topping>()
-                .Ignore(x => x.ItemToppings)
-                .Ignore(x => x.Id);
+                .Map(x => x.Name, x => x.Topping.Name)
+                .Map(x => x.Value, x => x.Topping.Value);
         }
     }
 }

@@ -12,13 +12,10 @@ namespace ContosoPizza.Models.Adapters
             config.NewConfig<Pizza, PizzaDTO>()
                 .TwoWays();
 
-            config.NewConfig<AddPizzaRequest, Pizza>()
-                .Ignore(x => x.Id)
-                .Ignore(x => x.Items);
-
             config.NewConfig<UpdatePizzaRequest, Pizza>()
-                .Ignore(x => x.Items)
-                .Ignore(x => x.Id);
+                .Map(x => x.Name, x => x.Pizza.Name)
+                .Map(x => x.Value, x => x.Pizza.Value)
+                .Map(x => x.IsGlutenFree, x => x.Pizza.IsGlutenFree);
         }
     }
 }
