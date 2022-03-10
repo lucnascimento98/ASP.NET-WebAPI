@@ -29,7 +29,7 @@ namespace ContosoPizza.Features.Users.Add
 
             var user = request.Adapt<User>();
 
-            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
             db.Users.Add(user);
 
