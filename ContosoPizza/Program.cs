@@ -61,6 +61,8 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("AddClaimToRole", policy => policy.RequireClaim("Claim", "AddClaimToRole"));
     options.AddPolicy("RemoveClaimFromRole", policy => policy.RequireClaim("Claim", "RemoveClaimFromRole"));
     options.AddPolicy("ListRoleClaims", policy => policy.RequireClaim("Claim", "ListRoleClaims"));
+    options.AddPolicy("GetAllUsersOrders", policy => policy.RequireClaim("Claim", "GetAllUsersOrders"));
+    options.AddPolicy("OrderPizza", policy => policy.RequireClaim("Claim", "OrderPizza"));
 });
 
 

@@ -22,9 +22,13 @@
         AddClaimToRole = 21,
         RemoveClaimFromRole = 22,
         ListRoleClaims = 23,
+        GetAllUsersOrders = 24,
+        OrderPizza = 25
     }
 }
 
 /*
- * admin = 0, 1, 4, 5, 6, 9, 11, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23
+ * admin = 0, 1, 4, 5, 6, 9, 11, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24
+ * 
+ * user = 25
  */
