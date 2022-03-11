@@ -11,12 +11,10 @@ namespace ContosoPizza.Features.Users.Add
     public class AddUserHandler : IRequestHandler<AddUserRequest, ResultOf<int>>
     {
         private readonly ContosoPizzaContext db;
-        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public AddUserHandler(ContosoPizzaContext db, IHttpContextAccessor httpContextAccessor)
+        public AddUserHandler(ContosoPizzaContext db)
         {
             this.db = db;
-            this.httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<ResultOf<int>> Handle(AddUserRequest request, CancellationToken cancellationToken)
