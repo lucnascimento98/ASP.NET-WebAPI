@@ -1,6 +1,7 @@
 ﻿using ContosoPizza.DTOs;
 using ContosoPizza.Features.Order.CreateOrder;
 using ContosoPizza.Features.Order.ListClientOrders;
+using ContosoPizza.Features.Order.OrderDetail;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,13 @@ namespace ContosoPizza.Features.Order
         public Task<ResultOf<PageResult<OrderDTO>>> ListClientOrders([FromQuery]ListOrdersRequest listOrdersRequest, CancellationToken cancellationToken)
         {
             return _mediator.Send(listOrdersRequest, cancellationToken);
+        }
+
+        [Authorize]
+        [HttpGet("{OrderId}")]
+        public Task<ResultOf<OrderDetailDTO>> OrderDetail([FromRoute] OrderDetailRequest orderDetailRequest, CancellationToken cancellationToken)
+        {
+            return _mediator.Send(orderDetailRequest, cancellationToken);
         }
 
         [Authorize(Policy = "OrderPizza")]
