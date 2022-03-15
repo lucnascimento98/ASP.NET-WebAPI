@@ -36,15 +36,7 @@ namespace ContosoPizza.Features.Order.OrderDetail
                 && order.ClientId.ToString() != userId)
                 return new ForbiddenError();
 
-            return new OrderDetailDTO()
-            {
-                Id = order.Id,
-                Items = order.Items.Select(x => new ItemDetailDTO()
-                {
-                    Pizza = x.Pizza.Adapt<PizzaDTO>(),
-                    Toppings = x.ItemToppings.Select(y => y.Topping.Adapt<ToppingDTO>()).ToList()
-                }).ToList()
-            };
+            return order.Adapt<OrderDetailDTO>();
         }
     }
 }
