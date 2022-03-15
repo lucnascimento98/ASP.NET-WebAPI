@@ -30,20 +30,19 @@ namespace ContosoPizza.Features.Order.CreateOrder
             foreach (var item in request.Items)
             {
                 if (!pizzas.Any(x => x.Id == item.PizzaId))
-                    errors.AddError("PizzaId: ", item.PizzaId.ToString() + "NotFound");
+                    errors.AddError(nameof(request.Items) + "[" + request.Items.IndexOf(item).ToString() + "]." + nameof(item.PizzaId), "Resource Not Found" );
 
                 foreach (var topping in item.ToppingsId)
                 {
                     if (!toppings.Select(x => x.Id).Contains(topping))
-                        errors.AddError("ToppingId: ", topping.ToString() + "NotFound");
+                        errors.AddError(nameof(request.Items) + "[" + request.Items.IndexOf(item).ToString() + "]." + nameof(item.ToppingsId) + "[" + item.ToppingsId.IndexOf(topping).ToString() + "]", "Resource Not Found");
                 }
             }
 
             if (errors.InternalSource.Count > 0)
-                return new BadRequestError() { FieldErrors = errors };
+                return new NotFoundError() { FieldErrors = errors };
 
             var order = new Models.Order() { 
-                Price = 0, 
                 ClientId = int.Parse(httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier).Value)
             };
 

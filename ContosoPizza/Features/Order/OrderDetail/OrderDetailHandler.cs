@@ -28,7 +28,7 @@ namespace ContosoPizza.Features.Order.OrderDetail
                 .Include(x => x.Client).FirstOrDefaultAsync(x => x.Id == request.OrderId, cancellationToken);
             
             if (order == null)
-                return new BadRequestError();
+                return new NotFoundError();
             
             var userId = httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
 

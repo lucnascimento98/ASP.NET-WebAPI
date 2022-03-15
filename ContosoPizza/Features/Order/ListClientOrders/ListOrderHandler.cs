@@ -1,6 +1,7 @@
 ﻿using ContosoPizza.DTOs;
 using ContosoPizza.Models;
 using ContosoPizza.Models.Enums;
+using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Nudes.Paginator.Core;
@@ -29,32 +30,18 @@ namespace ContosoPizza.Features.Order.ListClientOrders
                 if (request.ClientId.HasValue)
                     orders = orders.Where(d => d.ClientId == request.ClientId.Value);
 
-            var requestOrders = await orders
+            var requestOrders = orders
                 .Include(d => d.Client)
                 .Include(d => d.Items)
                 .ThenInclude(d => d.ItemToppings)
                 .Include(d => d.Items)
-                .ThenInclude(d => d.Pizza)
-                .Select(d => new OrderDTO()
-                {
-                    OrderId = d.Id,
-                    ClientID = d.ClientId,
-                    ClientName = d.Client.Name,
-                    Items = d.Items.Select(x => new ItemDTO()
-                    {
-                        PizzaId = x.PizzaId,
-                        PizzaName = x.Pizza.Name,
-                        Toppings = x.ItemToppings.Select(y => new ToppingLessDetailDTO()
-                        {
-                            Id = y.ToppingId,
-                            Name = y.Topping.Name
-                        }).ToList()
-                    }).ToList()
-                }).PaginateBy(request, o => o.ClientName).ToListAsync(cancellationToken);
+                .ThenInclude(d => d.Pizza).ProjectToType<OrderDTO>();
 
-            var total = requestOrders.Count;
+            var total = await requestOrders.CountAsync(cancellationToken);
 
-            return new PageResult<OrderDTO>(request, total, requestOrders);
+            var listOrders = await requestOrders.PaginateBy(request, o => o.ClientName).ToListAsync(cancellationToken);
+
+            return new PageResult<OrderDTO>(request, total, listOrders);
             
         }
     }
