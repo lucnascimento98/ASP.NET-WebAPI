@@ -7,5 +7,8 @@
         
         public virtual List<Item> Items { get; set; }
 
+        public int ClientId { get; set; }
+        public virtual User Client { get; set; }
+
     }
 }

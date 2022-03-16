@@ -15,6 +15,20 @@ namespace ContosoPizza.Models.Adapters
             config.NewConfig<UpdateToppingRequest, Topping>()
                 .Map(x => x.Name, x => x.Topping.Name)
                 .Map(x => x.Value, x => x.Topping.Value);
+
+            config.NewConfig<ItemTopping, ToppingLessDetailDTO>()   //
+                .Map(x => x.Id, x => x.Topping.Id)                  //
+                .Map(x => x.Name, x => x.Topping.Name);             // esses dois funcionam juntos
+                                                                    //
+            config.NewConfig<Item, ItemDTO>()                       //
+                .Map(x => x.Toppings, x => x.ItemToppings);         //
+
+            config.NewConfig<ItemTopping, ToppingDTO>()             //
+                .Map(x => x.Name, x => x.Topping.Name)              //
+                .Map(x => x.Value, x => x.Topping.Value);           // esses dois funcionam juntos
+                                                                    //
+            config.NewConfig<Item, ItemDetailDTO>()                 //
+                .Map(x => x.Toppings, x => x.ItemToppings);         //
         }
     }
 }
