@@ -1,0 +1,7 @@
+/ContosoPizza/obj/*
+/ContosoPizza/.vscode/*
+/ContosoPizza/bin
+/.vscode/*
+/.vs/*
+/ContosoPizza/.vs/*
+appsettings.local.json
