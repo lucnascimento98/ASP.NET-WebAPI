@@ -10,6 +10,7 @@ namespace ContosoPizza.Models.Adapters
         public void Register(TypeAdapterConfig config)
         {
             config.NewConfig<User, UserDTO>()
+                .Map(x => x.Role, x => x.Role.Name)
                 .TwoWays();
 
             config.NewConfig<AddUserRequest, User>()
